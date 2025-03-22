@@ -19,9 +19,18 @@
         <div class="right-column">
           <h2>Your Courses</h2>
           <ul>
-            <li v-for="(course, index) in courses" :key="index">
-              🎓 {{ course }}
+            <!-- Replace <li> with this for courses -->
+            <li v-for="course in courses" :key="course">
+                <router-link :to="`/course/${course}`">🎓 {{ course }}</router-link>
+                    </li>
+
+                    <!-- And this for recently added lectures -->
+                    <li v-for="lecture in recentLectures" :key="lecture.title">
+                <router-link :to="`/lecture/${lecture.course}/${lecture.title}`">
+                    📘 {{ lecture.title }} - {{ lecture.course }}
+                </router-link>
             </li>
+
           </ul>
         </div>
       </div>

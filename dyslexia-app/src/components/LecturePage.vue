@@ -44,7 +44,16 @@
       };
     },
     mounted() {
-      this.startWebcam();
+    this.startWebcam();
+
+    // Extract course + lectureId from route
+    const course = this.$route.params.course;
+    const lectureId = this.$route.params.lectureId;
+    console.log('Viewing', course, lectureId);
+    
+    // You can also dynamically update the title here if needed
+    this.courseCode = course;
+    this.courseTitle = `${course} Lecture: ${lectureId}`;
     },
     methods: {
       startWebcam() {
