@@ -6,10 +6,9 @@ from googleapiclient.discovery import build
 # ==== SETUP ====
 
 SCOPES = ['https://www.googleapis.com/auth/documents']
-GEMINI_API_KEY_PATH = 'apikey.txt'  # Gemini API key here
 
 def load_gemini_api_key():
-    with open(GEMINI_API_KEY_PATH, 'r') as f:
+    with open(os.getenv("GENAI_API_KEY"), 'r') as f:
         return f.read().strip()
 
 def authenticate_google_docs():
@@ -52,6 +51,36 @@ def create_doc_with_text(service, title, text):
     ]
     service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
     return doc_id
+
+def add_to_doc(service, doc_id, text_to_add):
+        # Get the current document to find its length
+        doc = service.documents().get(documentId=doc_id).execute()
+        end_index = doc['body']['content'][-1]['endIndex']
+
+        requests = [
+            {
+                'insertText': {
+                    'location': {'index': end_index - 1},
+                    'text': text_to_add
+                }
+            },
+            {
+                'updateTextStyle': {
+                    'range': {
+                        'startIndex': end_index - 1,
+                        'endIndex': end_index - 1 + len(text_to_add)
+                    },
+                    'textStyle': {
+                        'weightedFontFamily': {'fontFamily': 'Lexend'},
+                        'fontSize': {'magnitude': 14, 'unit': 'PT'}
+                    },
+                    'fields': 'weightedFontFamily,fontSize'
+                }
+            }
+        ]
+
+        service.documents().batchUpdate(documentId=doc_id, body={'requests': requests}).execute()
+
 
 # ==== GEMINI AI STEP ====
 
