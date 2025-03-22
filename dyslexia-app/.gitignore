@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+doc-id
+requirements.txt
 
 # local env files
 .env.local
