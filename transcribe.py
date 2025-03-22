@@ -9,6 +9,9 @@ from google.genai.types import Part
 from pydantic import BaseModel
 import os
 
+from googledocs import authenticate_google_docs, add_to_doc, create_doc_with_text
+
+
 class Response(BaseModel):
     problem: str
     position: str
@@ -22,14 +25,32 @@ def clear_console():
     else:
         print("\n" * 100)
 
+def setup():
+    service = authenticate_google_docs()
+    # Check id doc-id file exists
+    if os.path.exists("doc-id"):
+        with open("doc-id", "r") as f:
+            doc_identifier = f.read()
+    else:
+        # Create a new document
+        doc_identifier = create_doc_with_text(service, "Transcribed Doc", "...")
+        with open("doc-id", "w") as f:
+            f.write(doc_identifier)
+    return service, doc_identifier
+
+cap: cv2.VideoCapture = cv2.VideoCapture(0)
+docs_service, doc_id = setup()
+
 def capture_frame() -> np.ndarray:
-    cap = cv2.VideoCapture(0)
     ret, f = cap.read()
-    cap.release()
     # Encode to png
     _, f = cv2.imencode(".png", f)
     return f
 
+def consume_section(section: str):
+    if section == '':
+        return
+    add_to_doc(docs_service, doc_id, section)
 
 def transcribe(interval: int):
     last_image = None
@@ -54,7 +75,7 @@ def transcribe(interval: int):
             "Output '' for anything not applicable."
             f"The current content of the board is believed to be as follows: '{current_section}'"
             f"If this is incorrect, in the position field put 'REPLACE' and write all the text."
-            f"If Math is present, write it in latex.",
+            f"If Math is present, write it in latex. Make sure to include spaces in added_text as needed.",
             last_image, image])
         raw = client.models.generate_content(
             model="gemini-2.0-flash",
@@ -71,20 +92,20 @@ def transcribe(interval: int):
             if where == 'END':
                 current_section += response.added_text
             elif where.startswith('BEFORE'):
-                current_section = current_section.replace(where[7:], f' {response.added_text} ' + where[7:])
+                current_section = current_section.replace(where[7:], f'{response.added_text}' + where[7:])
             elif where.startswith('AFTER'):
-                current_section = current_section.replace(where[6:], where[6:] + f' {response.added_text} ')
+                current_section = current_section.replace(where[6:], where[6:] + f'{response.added_text}')
             elif where == 'REPLACE':
                 current_section = response.added_text
 
         clear_console()
         print(current_section)
-        if response.problem != 'OBSTRUCTED':
+
+        if response.problem not in ['OBSTRUCTED', 'NO CHANGES']:
             last_image = image
         if response.problem == 'CLEARED':
-            sections.append(current_section)
+            consume_section(current_section)
             current_section = ""
         sleep(interval)
 
-
-transcribe(2)
+transcribe(4)

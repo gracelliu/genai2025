@@ -8,11 +8,10 @@ from googleapiclient.discovery import build
 SCOPES = ['https://www.googleapis.com/auth/documents']
 
 def load_gemini_api_key():
-    with open(os.getenv("GENAI_API_KEY"), 'r') as f:
-        return f.read().strip()
+    return os.getenv("GENAI_API_KEY")
 
 def authenticate_google_docs():
-    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+    flow = InstalledAppFlow.from_client_secrets_file('creds/credentials.json', SCOPES)
     creds = flow.run_local_server(port=0)
     return build('docs', 'v1', credentials=creds)
 
