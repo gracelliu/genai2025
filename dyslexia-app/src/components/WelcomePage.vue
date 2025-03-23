@@ -9,7 +9,7 @@
 
         <h1>Welcome, Grace</h1>
         <div class="center-button">
-          <router-link :to="`/lecture`" class="shimmer-button">
+          <router-link :to="`/live`" class="shimmer-button">
             CLARIFY ✦˚˖⁺
           </router-link>
         </div>
@@ -33,7 +33,7 @@
           <h2>Recently Added Lectures</h2>
           <ul>
             <li v-for="(lecture, index) in recentLectures" :key="index">
-                <router-link :to="`/lecture`">
+                <router-link :to="`/live`">
               >
                 📘 Lecture {{ lecture.number }}: {{ lecture.title }} -
                 {{ lecture.course }}

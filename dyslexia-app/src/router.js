@@ -9,7 +9,7 @@ const routes = [
   { path: '/', name: 'Onboarding', component: OnboardPage }, // default route
   { path: '/home', name: 'Home', component: WelcomePage },
   { path: '/course/:courseCode', name: 'Course', component: CoursePage },
-  { path: '/lecture', name: 'Lecture', component: LecturePage },
+  { path: '/live', name: 'Live', component: LecturePage },
   { path: '/notes/:docId', name: 'Notes', component: NotesPage }
 ];
 
