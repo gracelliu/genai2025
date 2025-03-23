@@ -1,5 +1,9 @@
 /* src/assets/global.css */
-body {
+body,
+button,
+input,
+select,
+textarea {
     font-family: 'OpenDyslexic';
     font-weight: normal;
     background-color: #f4f6f8;
