@@ -166,4 +166,4 @@ def endpoint_delete_document():
 if __name__ == '__main__':
     session = create_session()
     create_user(session, 'Grace')
-    app.run(host='localhost', port=8000)
+    app.run(host='localhost', port=8080)
