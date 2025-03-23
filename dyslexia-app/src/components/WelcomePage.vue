@@ -10,7 +10,7 @@
         <h1>Welcome, Grace</h1>
         <div class="center-button">
           <router-link :to="`/lecture/CSC100/lecture-1`" class="shimmer-button">
-            CLARIFY
+            CLARIFY ✦˚˖⁺
           </router-link>
         </div>
 
