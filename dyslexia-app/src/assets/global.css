@@ -1,0 +1,14 @@
+/* src/assets/global.css */
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'OpenDyslexic';
+    font-weight: normal;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    color: #1e1e1e;
+  }
+  

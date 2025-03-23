@@ -4,12 +4,17 @@
     <section id="down"></section>
 
     <div class="overlay">
-      <h1>LexiSee</h1>
+      <h1>Clarity</h1>
+      <b>
+        A Dyslexia Tool
+      </b>
       <p>
-        LexiSee is an accessibility-focused tool designed to support individuals with dyslexia by converting handwritten text into clear, simplified course notes using dyslexia-friendly fonts like Lexend. Built to ease comprehension and boost learning confidence.
+        Clarify is a smart AI study companion designed to make learning easier, turning notes into dyslexia-friendly text and boosting focus with personalized tools.
       </p>
+
       <a href="https://www.dyslexia.com/about-dyslexia/" target="_blank">Learn more about dyslexia here</a>
-      <button @click="goToHome">Get Started</button>
+      <a href="https://opendyslexic.org/" target="_blank">Learn more about the OpenDyslexic font</a>
+      <button @click="goToHome">Get Started ✦˚˖⁺</button>
     </div>
   </div>
 </template>
@@ -32,7 +37,6 @@ body {
   min-height: 100vh;
   background-image: linear-gradient(80deg, rgb(5,124,172), rgb(199,10,114));
   overflow: hidden; 
-  font-family: 'Lexend', sans-serif;
   color: white;
 }
 
@@ -71,22 +75,28 @@ body {
 }
 
 .overlay h1 {
+  margin-top: -20px;
+  font-style: italic;
   font-size: 7rem;
-  margin: 0 0 25px 0;
+  margin-bottom: -10px;
+}
+
+.overlay b {
+  font-size: 30px;
 }
 
 .overlay p {
-  font-size: 1.3rem;
+  font-size: 30px;
   max-width: 800px;
-  margin: 0 0 25px 0;
+  margin-top: 50px;
   line-height: 1.5;
+  margin-bottom: 10px;
 }
 
 .overlay a {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-  margin-bottom: 35px;
+  font-size: 20px;
+  color: blueviolet;
+  text-decoration: underline;
 }
 
 .overlay a:hover {
@@ -96,11 +106,11 @@ body {
 
 .overlay button {
   padding: 20px 40px;
-  font-size: 1.4rem;
-  font-family: 'Lexend', sans-serif;
+  font-size: 1.5rem;
+  margin-top: 60px;
   border: none;
   border-radius: 8px;
-  background-color: #ffe28a;
+  background-color: rgb(222, 97, 233);
   color: #000;
   font-weight: bold;
   cursor: pointer;
