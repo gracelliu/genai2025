@@ -10,7 +10,7 @@
         <h1>Welcome, Grace</h1>
         <div class="center-button">
           <button class="shimmer-button" @click="handleStart">
-            Clarify
+            Clarify ✦˚˖⁺
           </button>
         </div>
 
