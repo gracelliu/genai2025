@@ -6,7 +6,14 @@
 
     <div class="overlay">
 
-    <h1>Welcome, Grace</h1>
+
+        <h1>Welcome, Grace</h1>
+        <div class="center-button">
+          <button class="shimmer-button" @click="handleStart">
+            Clarify
+          </button>
+        </div>
+
       <div class="content">
         <!-- LEFT COLUMN: Recently Added Lectures -->
         <div class="left-column">
@@ -100,6 +107,43 @@ h2 {
   display: flex;
   gap: 40px;
   flex-wrap: wrap;
+}
+
+.center-button {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 40px 0;
+}
+
+.shimmer-button {
+  padding: 16px 42px;
+  font-size: 35px;
+  font-weight: 600;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  background: linear-gradient(120deg, #c084fc, #a78bfa, #d8b4fe);
+  background-size: 300% 300%;
+  animation: shimmer 3s ease infinite;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.shimmer-button:hover {
+  transform: scale(1.05);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .left-column,
