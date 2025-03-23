@@ -159,7 +159,7 @@ const startImageCapture = () => {
           console.error("Image capture error:", err);
         });
     }, 'image/png');
-  }, 4000);
+  }, 2000);
 };
 
 onMounted(() => {

@@ -42,32 +42,42 @@
               </button>
             </div>
   
-            <div v-if="!matchedDocument">
-              <p>No matching document found.</p>
+            <button class="edit-button" @click="toggleEdit">
+              {{ isEditing ? 'Cancel' : 'Edit' }}
+            </button>
+
+            <div v-if="isEditing">
+              <textarea v-model="editedContent" rows="10" class="edit-textarea"></textarea>
+              <button class="save-button" @click="saveDocument">Save Changes</button>
             </div>
             <div v-else>
-              <h3>{{ matchedDocument.title }}</h3>
-              <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
-              <div v-html="renderMarkdown(matchedDocument.content)"></div>
-              <button class="delete-button" @click="deleteDocument">
-                Delete Lecture
-              </button>
+              <div v-if="!matchedDocument">
+                <p>No matching document found.</p>
+              </div>
+              <div v-else>
+                <h3>{{ matchedDocument.title }}</h3>
+                <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
+                <div v-html="renderMarkdown(matchedDocument.content)"></div>
+                <button class="delete-button" @click="deleteDocument">
+                  Delete Lecture
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-  
+
       <!-- Red toast for deletion -->
       <div v-if="showDeleteToast" class="toast delete-toast">
         Lecture deleted from the database 🗑️
       </div>
     </div>
   </template>
-  
+
   <script>
   import axios from 'axios';
   import { marked } from 'marked';
-  
+
   export default {
     name: 'NotesPage',
     data() {
@@ -76,7 +86,9 @@
         contrastMode: "default",
         matchedDocument: null,
         isPlaying: false,
-        showDeleteToast: false
+        showDeleteToast: false,
+        isEditing: false,
+        editedContent: ''
       };
     },
     computed: {
@@ -114,7 +126,7 @@
           await axios.delete("https://api-clarify.midnightsky.net/api/document/delete", {
             data: { id: this.docId }
           });
-  
+
           this.showDeleteToast = true;
           setTimeout(() => {
             window.location.href = "/home";
@@ -122,6 +134,26 @@
         } catch (error) {
           console.error("Failed to delete lecture:", error);
           window.location.href = "/home";
+        }
+      },
+      toggleEdit() {
+        this.isEditing = !this.isEditing;
+        if (this.isEditing) {
+          this.editedContent = this.matchedDocument.content;
+        }
+      },
+      async saveDocument() {
+        try {
+          await axios.post("https://api-clarify.midnightsky.net/api/document/update", {
+            id: this.docId,
+            content: this.editedContent,
+            title: this.matchedDocument.title,
+            group: this.matchedDocument.group
+          });
+          this.matchedDocument.content = this.editedContent;
+          this.isEditing = false;
+        } catch (error) {
+          console.error("Failed to update lecture:", error);
         }
       },
       renderMarkdown(text) {
@@ -133,14 +165,14 @@
     }
   };
   </script>
-  
+
   <style scoped>
   /* core layout */
   .notes-page {
     padding: 20px;
     background-color: #f4f6f8;
   }
-  
+
   /* headers */
   .code {
     font-size: 24px;
@@ -149,7 +181,7 @@
     font-size: 20px;
     margin-bottom: 20px;
   }
-  
+
   /* note container */
   .notes-container {
     background: white;
@@ -162,7 +194,7 @@
     font-size: 22px;
     margin-left: 8px;
   }
-  
+
   /* notes styling */
   .notes-content {
     background-color: #f0f4ff;
@@ -173,7 +205,7 @@
     font-size: 16px;
     color: #1e1e1e;
   }
-  
+
   /* accessibility controls */
   .accessibility-controls {
     display: flex;
@@ -198,7 +230,7 @@
     border: 1px solid #ccc;
     outline: none;
   }
-  
+
   /* fonts and contrast */
   .lexend-font {
     font-family: 'Lexend', sans-serif;
@@ -210,7 +242,7 @@
   .light-contrast { background-color: #fff9db; color: #000; }
   .dark-contrast { background-color: #1e1e1e; color: #f4f4f4; }
   .high-contrast { background-color: #ffff00; color: #000; }
-  
+
   /* speech button */
   .tts-button {
     display: inline-flex;
@@ -231,7 +263,7 @@
   .tts-button:hover {
     background-color: #b9e6a4;
   }
-  
+
   /* delete button */
   .delete-button {
     background-color: #f8d7da;
@@ -247,7 +279,41 @@
   .delete-button:hover {
     background-color: #f5c6cb;
   }
-  
+
+  /* edit button */
+  .edit-button, .save-button {
+    padding: 8px 12px;
+    margin-top: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .edit-button {
+    background-color: #cce5ff;
+    color: #004085;
+  }
+  .edit-button:hover {
+    background-color: #b8daff;
+  }
+  .save-button {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .save-button:hover {
+    background-color: #c3e6cb;
+  }
+  .edit-textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: monospace;
+    margin-top: 12px;
+    resize: vertical;
+  }
+
   /* animated toast */
   .toast {
     position: fixed;
@@ -264,7 +330,7 @@
     background-color: #f8d7da;
     color: #721c24;
   }
-  
+
   /* fade animation */
   @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(-10px); }
@@ -272,7 +338,7 @@
     90% { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(-10px); }
   }
-  
+
   /* background animation */
   #up, #down {
     position: absolute;
@@ -307,11 +373,10 @@
     0%, 100% { bottom: -100px; }
     70% { bottom: 700px; }
   }
-  
+
   .overlay {
     position: relative;
     z-index: 1;
     padding: 60px 40px;
   }
   </style>
-  
