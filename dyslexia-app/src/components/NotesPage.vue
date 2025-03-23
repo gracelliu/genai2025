@@ -14,14 +14,30 @@
   
         <div class="notes-container">
           <h2 class="notes-title">Notes</h2>
-          <button @click="toggleFont" class="font-toggle">
-            Use {{ currentFont === 'opendyslexic' ? 'Lexend' : 'OpenDyslexic' }} Font
-          </button>
+          <div class="notes-content" :class="[currentFont + '-font', contrastMode + '-contrast']">
+  <div class="accessibility-controls">
+    <div class="selector">
+      <label for="fontSelect">Font:</label>
+      <select id="fontSelect" v-model="currentFont">
+        <option value="lexend">Lexend</option>
+        <option value="opendyslexic">OpenDyslexic</option>
+      </select>
+    </div>
 
-          <div class="notes-content" :class="currentFont === 'lexend' ? 'lexend-font' : 'opendyslexic-font'">
+    <div class="selector">
+      <label for="contrastMode">Contrast:</label>
+      <select id="contrastMode" v-model="contrastMode">
+        <option value="default">Default</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="high">High Contrast</option>
+      </select>
+    </div>
+  </div>
 
-            <p>Write your notes here...</p>
-          </div>
+  <p>Write your notes here...</p>
+</div>
+
         </div>
       </div>
     </div>
@@ -32,7 +48,9 @@
     name: 'NotesPage',
     data() {
       return {
-        currentFont: 'opendyslexic'
+        currentFont: 'opendyslexic',
+        contrastMode: "default"
+
       };
     },
 
@@ -48,6 +66,9 @@
     toggleFont() {
       this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
     }
+   
+
+    
   }
   };
   </script>
@@ -132,20 +153,67 @@
   font-family: 'OpenDyslexic', sans-serif;
 }
 
-.font-toggle {
-  background-color: #ffe28a;
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-  margin-bottom: 16px;
+
+
+/* Contrast Modes */
+.default-contrast {
+  background-color: #f0f4ff;
+  color: #1e1e1e;
 }
-.font-toggle:hover {
-  background-color: #ffd65a;
+.light-contrast {
+  background-color: #fff9db;
+  color: #000;
+}
+.dark-contrast {
+  background-color: #1e1e1e;
+  color: #f4f4f4;
+}
+.high-contrast {
+  background-color: #ffff00;
+  color: #000;
+}
+
+/* Dropdown styling */
+.contrast-selector {
+  margin-top: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#contrastMode {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+.accessibility-controls {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.selector {
+  display: flex;
+  flex-direction: column;
+}
+
+.selector label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.selector select {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
 }
 
   @keyframes down {
