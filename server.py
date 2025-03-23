@@ -96,6 +96,7 @@ def new_image():
 
     new_section_flag = False
 
+    curr_sec = current_section
     if response.problem == 'NEW_SECTION':
         sections.append(current_section)
         current_section = response.notes
@@ -109,6 +110,7 @@ def new_image():
     print(f"Problem: {response.problem}")
     print(f"Edits: {response.update_notes}")
     print(f"Notes: {response.notes}")
+    print(f"current_section: {curr_sec}")
     print(f"Explanation: {response.explanation}")
 
     return {
