@@ -9,29 +9,55 @@
       </div>
 
       <div class="page">
-        <p>This is the notes page for <strong>{{ matchedDocument?.title ?? "Error" }}</strong> in <strong>{{ matchedDocument?.group ?? '' }}</strong>.</p>
+        <p>This is the notes page for <strong>{{ matchedDocument?.title ?? "Error" }}</strong> in <strong>{{
+          matchedDocument?.group ?? '' }}</strong>.</p>
       </div>
 
       <div class="notes-container">
         <h2 class="notes-title">Notes</h2>
-        <button @click="toggleFont" class="font-toggle">
-          Use {{ currentFont === 'opendyslexic' ? 'Lexend' : 'OpenDyslexic' }} Font
-        </button>
 
-        <div class="notes-content" :class="currentFont === 'lexend' ? 'lexend-font' : 'opendyslexic-font'">
-          <div v-if="!matchedDocument">
-            <p>No matching document found.</p>
+
+        <div class="notes-content" :class="[currentFont + '-font', contrastMode + '-contrast']">
+          <div class="accessibility-controls">
+            <div class="selector">
+              <label for="fontSelect">Font:</label>
+              <select id="fontSelect" v-model="currentFont">
+                <option value="lexend">Lexend</option>
+                <option value="opendyslexic">OpenDyslexic</option>
+              </select>
+            </div>
+
+            <div class="selector">
+              <label for="contrastMode">Contrast:</label>
+              <select id="contrastMode" v-model="contrastMode">
+                <option value="default">Default</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="high">High Contrast</option>
+              </select>
+            </div>
+            <button class="tts-button" :class="{ playing: isPlaying }" @click="speakText">
+            <i class="fas fa-volume-up"></i> {{ isPlaying ? 'Playing' : 'Listen' }}
+            </button>
           </div>
-          <div v-else>
-            <h3>{{ matchedDocument.title }}</h3>
-            <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
-            <div v-html="renderMarkdown(matchedDocument.content)"></div>
-          </div>
+          <div>
+              <div v-if="!matchedDocument">
+                <p>No matching document found.</p>
+              </div>
+              <div v-else>
+                <h3>{{ matchedDocument.title }}</h3>
+                <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
+                <div v-html="renderMarkdown(matchedDocument.content)"></div>
+              </div>
+            </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+
+
 
 <script>
 import axios from 'axios';
@@ -43,7 +69,8 @@ export default {
     return {
       currentFont: 'opendyslexic',
       contrastMode: "default",
-      matchedDocument: null
+      matchedDocument: null,
+      isPlaying: false
     };
   },
   computed: {
@@ -53,10 +80,17 @@ export default {
   },
   methods: {
     speakText() {
-      const text = "Write your notes here..."; // 🔁 replace with dynamic note content if needed
+      const text = this.matchedDocument.content;
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1; // normal speed
       utterance.pitch = 1; // normal tone
+
+      this.isPlaying = true;
+      // Reset back to "not playing" once audio ends
+      utterance.onend = () => {
+        this.isPlaying = false;
+      };
+
       speechSynthesis.speak(utterance);
     },
     toggleFont() {
@@ -194,8 +228,30 @@ export default {
   margin-bottom: 16px;
 }
 
-.font-toggle:hover {
-  background-color: #ffd65a;
+
+.tts-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #e69dee; /* purple default */
+  color: #000;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.tts-button.playing {
+  background-color: #b9e6a4; /* green when playing */
+}
+
+.tts-button:hover {
+  /* Disable hover effect */
+  background-color: inherit;
 }
 
 
@@ -204,14 +260,17 @@ export default {
   background-color: #f0f4ff;
   color: #1e1e1e;
 }
+
 .light-contrast {
   background-color: #fff9db;
   color: #000;
 }
+
 .dark-contrast {
   background-color: #1e1e1e;
   color: #f4f4f4;
 }
+
 .high-contrast {
   background-color: #ffff00;
   color: #000;
@@ -233,6 +292,7 @@ export default {
   border: 1px solid #ccc;
   outline: none;
 }
+
 .accessibility-controls {
   display: flex;
   gap: 24px;
@@ -259,11 +319,13 @@ export default {
   border: 1px solid #ccc;
   outline: none;
 }
+
 .tts-button {
   display: inline-flex;
+  margin-top: 40px;
   align-items: center;
   gap: 8px;
-  background-color: #d0f0c0;
+  background-color: #e69dee;
   color: #000;
   padding: 8px 14px;
   font-size: 14px;
@@ -284,23 +346,26 @@ export default {
 }
 
 @keyframes down {
+
   0%,
   100% {
     top: -100px;
   }
+
   70% {
     top: 700px;
   }
 }
 
 @keyframes up {
+
   0%,
   100% {
     bottom: -100px;
   }
+
   70% {
     bottom: 700px;
   }
 }
 </style>
-  
