@@ -33,6 +33,11 @@
         <option value="high">High Contrast</option>
       </select>
     </div>
+    <!-- 🔊 Text-to-Speech Button -->
+  <button class="tts-button" @click="speakText">
+    <i class="fas fa-volume-up"></i> Listen
+  </button>
+
   </div>
 
   <p>Write your notes here...</p>
@@ -65,7 +70,14 @@
     methods: {
     toggleFont() {
       this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
-    }
+    },
+    speakText() {
+      const text = "Write your notes here..."; // 🔁 replace with dynamic note content if needed
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1; // normal speed
+      utterance.pitch = 1; // normal tone
+      speechSynthesis.speak(utterance);
+  }
    
 
     
@@ -215,6 +227,30 @@
   border: 1px solid #ccc;
   outline: none;
 }
+.tts-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #d0f0c0;
+  color: #000;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.tts-button:hover {
+  background-color: #b9e6a4;
+}
+
+.tts-button i {
+  font-size: 16px;
+}
+
 
   @keyframes down {
     0%, 100% {
