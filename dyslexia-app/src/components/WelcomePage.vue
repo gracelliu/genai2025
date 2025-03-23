@@ -205,6 +205,8 @@ a:hover {
 </style>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "WelcomePage",
   data() {
@@ -223,8 +225,28 @@ export default {
         { number: 1, title: "Introduction to Biology", course: "BIO100" },
         { number: 11, title: "Acid-Base Reactions", course: "CHM100" },
       ],
-      courses: ["CSC100", "MAT100", "STA100", "BIO100", "CHM100", "PHY100"],
+      courses: []
     };
   },
+  methods: {
+    async fetchCoursesFromDB() {
+      try {
+        const res = await axios.get("http://localhost:8000/api/document/list");
+        const documents = res.data;
+
+        // Extract unique group codes (i.e., course codes)
+        const uniqueGroups = [
+          ...new Set(documents.map(doc => doc.group?.trim()).filter(Boolean))
+        ];
+
+        this.courses = uniqueGroups;
+      } catch (err) {
+        console.error("Failed to load courses:", err);
+      }
+    }
+  },
+  mounted() {
+    this.fetchCoursesFromDB();
+  }
 };
 </script>

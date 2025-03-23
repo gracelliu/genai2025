@@ -13,6 +13,9 @@ import tempfile
 import subprocess
 from flask import send_file
 from sqlalchemy.orm import Session
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from document import create_session, get_user_by_name, get_documents_by_user, Document, get_document_by_id, create_user, \
     create_document, update_document
@@ -122,15 +125,24 @@ def endpoint_get_documents():
 def endpoint_create_document():
     global session
     user = get_user_by_name(session, 'Grace')
-    data = request.json
-    document = create_document(session, user, data['title'], data['content'], data['group'])
 
-    return jsonify({
-        "id": document.id,
-        "title": document.title,
-        "content": document.content,
-        "group": document.group
-    })
+    if user is None:
+        print("❌ No user 'Grace' found!")
+        return jsonify({"error": "User not found"}), 400
+
+    try:
+        data = request.json
+        print("✅ Incoming request data:", data)
+        document = create_document(session, user, data['title'], data['content'], data['group'])
+        return jsonify({
+            "id": document.id,
+            "title": document.title,
+            "content": document.content,
+            "group": document.group
+        })
+    except Exception as e:
+        print("🔥 Exception while creating document:", str(e))
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/document/update', methods=['POST'])
 def endpoint_update_document():

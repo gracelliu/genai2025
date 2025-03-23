@@ -17,10 +17,16 @@
           <button @click="toggleFont" class="font-toggle">
             Use {{ currentFont === 'opendyslexic' ? 'Lexend' : 'OpenDyslexic' }} Font
           </button>
-
+  
           <div class="notes-content" :class="currentFont === 'lexend' ? 'lexend-font' : 'opendyslexic-font'">
-
-            <p>Write your notes here...</p>
+            <div v-if="!matchedDocument">
+              <p>No matching document found.</p>
+            </div>
+            <div v-else>
+              <h3>{{ matchedDocument.title }}</h3>
+              <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
+              <div v-html="renderMarkdown(matchedDocument.content)"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -28,14 +34,17 @@
   </template>
   
   <script>
+  import axios from 'axios';
+  import { marked } from 'marked';
+  
   export default {
     name: 'NotesPage',
     data() {
       return {
-        currentFont: 'opendyslexic'
+        currentFont: 'opendyslexic',
+        matchedDocument: null
       };
     },
-
     computed: {
       courseCode() {
         return this.$route.params.courseCode;
@@ -45,10 +54,38 @@
       }
     },
     methods: {
-    toggleFont() {
-      this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
+      toggleFont() {
+        this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
+      },
+      async fetchDocument() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/document/list');
+            const documents = response.data;
+
+            // Match only by group (case + whitespace insensitive)
+            this.matchedDocument = documents.find(doc =>
+            doc.group?.trim().toLowerCase() === this.courseCode.trim().toLowerCase()
+            );
+
+            if (!this.matchedDocument) {
+            console.warn("No document found with group:", this.courseCode);
+            }
+        } catch (error) {
+            console.error("Failed to fetch documents:", error);
+            this.matchedDocument = {
+            title: 'Error',
+            group: '',
+            content: 'Failed to fetch or match documents.'
+            };
+        }
+        },
+      renderMarkdown(text) {
+        return marked.parse(text || '');
+      }
+    },
+    mounted() {
+      this.fetchDocument();
     }
-  }
   };
   </script>
   
@@ -90,8 +127,14 @@
     color: #1e1e1e;
   }
   
-  /* 🔵 Background blob animation */
-  #up, #down {
+  .document-block {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #up,
+  #down {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
@@ -124,32 +167,35 @@
     z-index: 1;
     padding: 60px 40px;
   }
+  
   .lexend-font {
-  font-family: 'Lexend', sans-serif;
-}
-
-.opendyslexic-font {
-  font-family: 'OpenDyslexic', sans-serif;
-}
-
-.font-toggle {
-  background-color: #ffe28a;
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-  margin-bottom: 16px;
-}
-.font-toggle:hover {
-  background-color: #ffd65a;
-}
-
+    font-family: 'Lexend', sans-serif;
+  }
+  
+  .opendyslexic-font {
+    font-family: 'OpenDyslexic', sans-serif;
+  }
+  
+  .font-toggle {
+    background-color: #ffe28a;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 16px;
+  }
+  
+  .font-toggle:hover {
+    background-color: #ffd65a;
+  }
+  
   @keyframes down {
-    0%, 100% {
+    0%,
+    100% {
       top: -100px;
     }
     70% {
@@ -158,7 +204,8 @@
   }
   
   @keyframes up {
-    0%, 100% {
+    0%,
+    100% {
       bottom: -100px;
     }
     70% {
