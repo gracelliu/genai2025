@@ -1,3 +1,5 @@
+import os
+
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, create_engine
 
@@ -18,7 +20,11 @@ class Document(Base):
     group = Column(String(255))
 
 def get_engine():
-    return create_engine('sqlite:///database.db')
+    username = 'clarify'
+    password = 'clarifypassword123'
+    port = 5432
+    database = 'clarify'
+    return create_engine('postgresql://{}:{}@{}:{}/{}'.format(username, password, os.getenv('DB_HOST'), port, database))
 
 def create_session() -> Session:
     engine = get_engine()

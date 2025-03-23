@@ -66,7 +66,8 @@ def new_image():
         " and return notes on this new lecture piece. Use problem=NEW_SECTION sparingly, only when "
         "the images are two different slides/lessons. To ensure consistency, you must not"
         " output NEW_SECTION before the slide changes. Make sure the section notes are always up to date. Only"
-        "set update_notes to true if the notes have been updated from what I give you below."
+        "set update_notes to true if the notes have been updated from what I give you below. If the content is"
+        "confusing, elaborate a bit, they should be readable notes."
     )
 
     content = filter(lambda x: x is not None, [prompt, f"Here is the current version of this section of the notes: '''{current_section}''' If this is wrong or missing anything, output new notes taken from the 2nd image and set update_notes to true.", last_image, image])
