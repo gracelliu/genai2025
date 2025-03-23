@@ -77,7 +77,8 @@ def new_image():
         "notes: str - The notes taken from the second image"
         "problem: str - The problem with the images, if any"
         "update_notes: bool - Whether you have update the notes to be up to date"
-        "explanation: str - An explanation of why you put the values you did for the three above fields. If you set update_notes to false, explain why and say what the current notes are."
+        "explanation: str - An explanation of why you put the values you did for the three above fields. If you set update_notes to false, explain why and "
+        "specifically write what the current notes are that I told you in the prompt say current_notes: ..., notes: ...."
         ""
         "The next message will contain what is currently in the notes."
     )
