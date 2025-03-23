@@ -27,7 +27,6 @@
               <button @click="saveTranscriptToDatabase">Save</button>
             </div>
           </div>
-          <transition name="fade">
             <div class="transcript-body" ref="transcriptBody" :key="fadeKey">
               <div
                 v-for="(section, sIndex) in sections"
@@ -38,7 +37,6 @@
                 <hr v-if="sIndex < sections.length - 1" />
               </div>
             </div>
-          </transition>
         </div>
       </div>
     </div>
@@ -61,7 +59,6 @@ const customTitle = ref('');
 const customGroup = ref('');
 const sections = ref([]);
 const webcam = ref(null);
-const fadeKey = ref(0);
 const transcriptBody = ref(null);
 const showToast = ref(false);
 
@@ -137,16 +134,13 @@ const startImageCapture = () => {
 
           if (data.new_section) {
             sections.value.push(updatedSection);
-            fadeKey.value++;
           } else if (sections.value.length > 0) {
             const currSection = sections.value.at(-1);
             if (updatedSection !== currSection) {
               sections.value[sections.value.length - 1] = updatedSection;
-              fadeKey.value++;
             }
           } else {
             sections.value.push(updatedSection);
-            fadeKey.value++;
           }
 
           nextTick(() => {
@@ -312,13 +306,6 @@ button:hover {
 
 .transcript-section {
   margin-bottom: 20px;
-}
-
-.fade-enter-active {
-  transition: opacity 0.6s ease;
-}
-.fade-enter-from {
-  opacity: 0;
 }
 
 .toast {

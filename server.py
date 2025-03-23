@@ -1,3 +1,6 @@
+import sys
+import time
+from platform import system
 from time import sleep
 
 import asyncio
@@ -23,6 +26,9 @@ from document import create_session, get_user_by_name, get_documents_by_user, Do
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+requests_this_day = 0
+# day is just time millis / 86400000
+day = int(time.time() / (24 * 60 * 60))
 sections = []
 last_image = None
 session: Session | None = None
@@ -43,10 +49,19 @@ def clear_console():
 
 @app.route('/api/new_image', methods=['POST'])
 def new_image():
-    global sections, last_image
+    global sections, last_image, requests_this_day, day
 
     if 'image' not in request.files:
         return {"error": "No image uploaded"}, 400
+
+    if requests_this_day >= 2500:
+        return {"error": "Rate limit exceeded"}, 429
+
+    requests_this_day += 1
+    curr_day = int(time.time() / (24 * 60 * 60))
+    if curr_day != day:
+        requests_this_day = 0
+        day = curr_day
 
     uploaded_file = request.files['image']
     current_section = request.form['current_section']
