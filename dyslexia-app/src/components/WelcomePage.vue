@@ -9,13 +9,26 @@
 
         <h1>Welcome, Grace</h1>
         <div class="center-button">
-          <button class="shimmer-button" @click="handleStart">
-            Clarify
-          </button>
+          <router-link :to="`/lecture/CSC100/lecture-1`" class="shimmer-button">
+            CLARIFY ✦˚˖⁺
+          </router-link>
         </div>
 
       <div class="content">
         <!-- LEFT COLUMN: Recently Added Lectures -->
+
+        <!-- RIGHT COLUMN: Courses -->
+        <div class="right-column">
+          <h2>Your Courses</h2>
+          <ul>
+            <li v-for="(course, index) in courses" :key="index">
+              <router-link :to="`/course/${course}`"
+                >🎓 {{ course }}</router-link
+              >
+            </li>
+          </ul>
+        </div>
+
         <div class="left-column">
           <h2>Recently Added Lectures</h2>
           <ul>
@@ -30,17 +43,6 @@
           </ul>
         </div>
 
-        <!-- RIGHT COLUMN: Courses -->
-        <div class="right-column">
-          <h2>Your Courses</h2>
-          <ul>
-            <li v-for="(course, index) in courses" :key="index">
-              <router-link :to="`/course/${course}`"
-                >🎓 {{ course }}</router-link
-              >
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>
@@ -116,11 +118,12 @@ h2 {
 }
 
 .shimmer-button {
-  padding: 16px 42px;
-  font-size: 35px;
+  display: inline-block;
+  text-align: center;
+  padding: 16px 32px;
+  font-size: 18px;
   font-weight: 600;
-  border: none;
-  border-radius: 20px;
+  border-radius: 10px;
   color: white;
   background: linear-gradient(120deg, #c084fc, #a78bfa, #d8b4fe);
   background-size: 300% 300%;
@@ -128,6 +131,7 @@ h2 {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
+  text-decoration: none; /* removes underline from link */
 }
 
 .shimmer-button:hover {

@@ -14,7 +14,7 @@
 
       <a href="https://www.dyslexia.com/about-dyslexia/" target="_blank">Learn more about dyslexia here</a>
       <a href="https://opendyslexic.org/" target="_blank">Learn more about the OpenDyslexic font</a>
-      <button @click="goToHome">Get Started ✧˖°</button>
+      <button @click="goToHome">Get Started ✦˚˖⁺</button>
     </div>
   </div>
 </template>
