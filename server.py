@@ -28,8 +28,8 @@ last_image = None
 session: Session | None = None
 
 class Response(BaseModel):
-    thinking: str
     notes: str
+    thinking: str
     problem: str
     update_notes: bool
 
@@ -165,6 +165,12 @@ def endpoint_update_document():
     content = data['content'] if 'content' in data else document.content
     group = data['group'] if 'group' in data else document.group
     update_document(session, document, title, content, group)
+    return jsonify({
+        "id": document.id,
+        "title": title,
+        "content": content,
+        "group": group
+    })
 
 @app.route('/api/document/delete', methods=['DELETE'])
 def endpoint_delete_document():
@@ -172,6 +178,7 @@ def endpoint_delete_document():
     data = request.json
     document = get_document_by_id(session, data['id'])
     delete_document(session, document)
+    return jsonify({"success": True})
 
 
 # Run app
