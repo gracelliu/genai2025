@@ -348,6 +348,22 @@ export default {
   font-size: 16px;
 }
 
+.delete-button {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #f5c6cb;
+}
+
 @keyframes down {
 
   0%,
