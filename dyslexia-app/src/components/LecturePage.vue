@@ -1,33 +1,39 @@
 <template>
   <div class="lecture-page">
-    <!-- Top Bar -->
-    <div class="header">
-      <h1>{{ courseCode }}: {{ courseTitle }}</h1>
-    </div>
+    <section id="up"></section>
+    <section id="down"></section>
 
-    <!-- Main Content -->
-    <div class="content">
-      <!-- Webcam Feed -->
-      <div class="webcam">
-        <h2>Your Webcam</h2>
-        <video ref="webcam" autoplay playsinline muted></video>
+    <div class="overlay">
+      <!-- Top Bar -->
+      <div class="header">
+        <h1>Clarifier</h1>
       </div>
 
-      <!-- Transcript Section -->
-      <div class="transcript">
-        <div class="transcript-header">
-          <h2>Live Transcript</h2>
-          <button @click="openInGoogleDocs">Open in Google Docs</button>
+      <!-- Main Content -->
+      <div class="content">
+        <!-- Webcam Feed -->
+        <div class="webcam">
+          <h2>Your Webcam</h2>
+          <video ref="webcam" autoplay playsinline muted></video>
         </div>
-        <div class="transcript-body">
-          <p v-for="(line, index) in transcriptLines" :key="index">
-            {{ line }}
-          </p>
+
+        <!-- Transcript Section -->
+        <div class="transcript">
+          <div class="transcript-header">
+            <h2>Live Transcript</h2>
+            <button @click="openInGoogleDocs">Open in Google Docs</button>
+          </div>
+          <div class="transcript-body">
+            <p v-for="(line, index) in transcriptLines" :key="index">
+              {{ line }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -82,8 +88,65 @@ export default {
   padding: 20px;
   background-color: #f5f7f9;
   color: #1e1e1e;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
+/* Background animation blobs */
+#up, #down {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+#up {
+  height: 800px;
+  width: 800px;
+  background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
+  top: -200px;
+  left: -200px;
+  animation-name: down;
+}
+
+#down {
+  height: 500px;
+  width: 500px;
+  background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
+  bottom: -150px;
+  right: -150px;
+  animation-name: up;
+}
+
+@keyframes down {
+  0%, 100% {
+    top: -100px;
+  }
+  70% {
+    top: 700px;
+  }
+}
+
+@keyframes up {
+  0%, 100% {
+    bottom: -100px;
+  }
+  70% {
+    bottom: 700px;
+  }
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  padding: 60px 40px;
+}
+
+/* Existing styles */
 .header {
   text-align: left;
   margin-bottom: 20px;
@@ -122,9 +185,8 @@ video {
   max-height: 400px;
   overflow-y: auto;
   line-height: 1.8;
-  font-size: 16px;
-  letter-spacing: 0.02em;
   font-size: 18px;
+  letter-spacing: 0.02em;
 }
 
 button {
