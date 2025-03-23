@@ -9,11 +9,12 @@
         A Dyslexia Tool
       </b>
       <p>
-        Clarity is an accessibility-focused tool designed to support individuals with dyslexia by converting handwritten text into clear, simplified course notes using dyslexia-friendly fonts like Lexend. Built to ease comprehension and boost learning confidence.
+        Clarify is a smart AI study companion designed to make learning easier, turning notes into dyslexia-friendly text and boosting focus with personalized tools.
       </p>
 
       <a href="https://www.dyslexia.com/about-dyslexia/" target="_blank">Learn more about dyslexia here</a>
-      <button @click="goToHome">Get Started</button>
+      <a href="https://opendyslexic.org/" target="_blank">Learn more about the OpenDyslexic font</a>
+      <button @click="goToHome">Get Started ✧˖°</button>
     </div>
   </div>
 </template>
@@ -96,7 +97,6 @@ body {
   font-size: 20px;
   color: blueviolet;
   text-decoration: underline;
-  margin-bottom: 35px;
 }
 
 .overlay a:hover {
@@ -107,7 +107,7 @@ body {
 .overlay button {
   padding: 20px 40px;
   font-size: 1.5rem;
-  margin-top: 30px;
+  margin-top: 60px;
   border: none;
   border-radius: 8px;
   background-color: rgb(222, 97, 233);
