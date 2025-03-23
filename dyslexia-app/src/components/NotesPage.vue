@@ -122,18 +122,26 @@ export default {
       }
     },
     async deleteDocument() {
-        const confirmDelete = confirm("Are you sure you want to delete this lecture?");
-        if (!confirmDelete) return;
-  
+        // const confirmDelete = confirm("Are you sure you want to delete this lecture?");
+        // if (!confirmDelete) return;
+
         try {
-          await axios.delete("https://api-clarify.midnightsky.net/api/document/delete", {
+            await axios.delete("https://api-clarify.midnightsky.net/api/document/delete", {
             data: { id: this.docId }
-          });
-          this.$router.push("/");
+            });
+
+            // Optional: show a quick notification
+
+            window.location.href = "/home";
+
+            alert("Lecture deleted.");
+
+            // ✅ Redirect immediately after deletion
         } catch (error) {
-          console.error("Failed to delete lecture:", error);
+            window.location.href = "/home";
+            console.error("Failed to delete lecture:", error);
         }
-      },
+        },
     renderMarkdown(text) {
       return marked.parse(text || '');
     }
