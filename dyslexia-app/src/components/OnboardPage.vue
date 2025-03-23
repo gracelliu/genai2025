@@ -9,7 +9,7 @@
         LexiSee is an accessibility-focused tool designed to support individuals with dyslexia by converting handwritten text into clear, simplified course notes using dyslexia-friendly fonts like Lexend. Built to ease comprehension and boost learning confidence.
       </p>
       <a href="https://www.dyslexia.com/about-dyslexia/" target="_blank">Learn more about dyslexia here</a>
-      <button @click="goToLogin">Get Started</button>
+      <button @click="goToHome">Get Started</button>
     </div>
   </div>
 </template>
@@ -18,10 +18,10 @@
 export default {
   name: "LexiseeComponent",
   methods: {
-    goToLogin() {
-      this.$router.push("/login");
-    },
-  },
+  goToHome() {
+    this.$router.push("/home");
+    }
+  }
 };
 </script>
 
