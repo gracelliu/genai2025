@@ -34,11 +34,8 @@
 
 <script setup>
 import {ref, onMounted, nextTick} from 'vue';
-import {useRoute} from 'vue-router';
+// import {useRoute} from 'vue-router';
 import {marked} from 'marked';
-
-
-const route = useRoute();
 
 const courseCode = ref('');
 const courseTitle = ref('');
@@ -119,10 +116,10 @@ const startImageCapture = () => {
 onMounted(() => {
   startWebcam();
 
-  const course = route.params.course;
-  const lectureId = route.params.lectureId;
-  courseCode.value = course;
-  courseTitle.value = `${course} Lecture: ${lectureId}`;
+  // const course = route.params.course;
+  // const lectureId = route.params.lectureId;
+  // courseCode.value = course;
+  // courseTitle.value = `${course} Lecture: ${lectureId}`;
 
   startImageCapture();
 });
