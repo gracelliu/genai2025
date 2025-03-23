@@ -71,9 +71,16 @@ def new_image():
         " output NEW_SECTION before the slide changes. Make sure the section notes are always up to date. Only"
         "set update_notes to true if the notes have been updated from what I give you below. If the content is"
         "confusing, elaborate a bit, they should be readable notes."
+        ""
+        "Schema:"
+        "notes: str - The notes taken from the second image"
+        "problem: str - The problem with the images, if any"
+        "update_notes: bool - Whether you have update the notes to be up to date"
+        ""
+        "The next message will contain what is currently in the notes."
     )
 
-    content = filter(lambda x: x is not None, [prompt, f"Here is the current version of this section of the notes: '''{current_section}''' If this is wrong or missing anything, output new notes taken from the 2nd image and set update_notes to true.", last_image, image])
+    content = filter(lambda x: x is not None, [prompt, f"Here is the current version of this section of the notes: \"\"\"\n{current_section}\"\"\" If this is wrong or missing anything, output new notes taken from the 2nd image and set update_notes to true.", last_image, image])
     raw = client.models.generate_content(
         model="gemini-2.0-flash",
         contents=content,
