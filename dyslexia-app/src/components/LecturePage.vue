@@ -2,7 +2,7 @@
   <div class="lecture-page">
     <!-- Top Bar -->
     <div class="header">
-      <h1>{{ courseCode }}: {{ courseTitle }}</h1>
+      <h1>Clarify Mode</h1>
     </div>
 
     <!-- Main Content -->
@@ -43,8 +43,8 @@ import { marked } from 'marked';
 
 const route = useRoute();
 
-const courseCode = ref('');
-const courseTitle = ref('');
+// const courseCode = ref('');
+// const courseTitle = ref('');
 const customTitle = ref('');
 const customGroup = ref('');
 const sections = ref([]);

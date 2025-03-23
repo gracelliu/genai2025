@@ -28,8 +28,6 @@
         </div>
       </div>
       <div class="button-container">
-      <button @click="handleAddLecture">Add New Lecture</button>
-      
     </div>
     </div>
   </div>
@@ -47,14 +45,7 @@ export default {
   },
   mounted() {
     this.courseCode = this.$route.params.courseCode;
-  },
-  methods: {
-    handleAddLecture() {
-      this.lectureCount += 1;
-    }
   }
-
-
 };
 </script>
 
