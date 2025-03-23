@@ -51,7 +51,7 @@ body {
   height: 800px; 
   width: 800px; 
   background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
-  animation: down 20s infinite; 
+  animation: down 10s infinite; 
 }
 
 #down {
@@ -59,7 +59,7 @@ body {
   height: 500px; 
   width: 500px;
   background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
-  animation: up 20s infinite;
+  animation: up 10s infinite;
 }
 
 .overlay {
