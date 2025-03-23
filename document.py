@@ -40,6 +40,10 @@ def get_documents_by_user(session, user):
 def get_document_by_id(session, document_id):
     return session.query(Document).filter(Document.id == document_id).first()
 
+def delete_document(session, document):
+    session.delete(document)
+    session.commit()
+
 def create_user(session, name):
     user = User(name=name)
     session.add(user)
