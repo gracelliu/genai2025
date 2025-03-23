@@ -109,6 +109,7 @@ const startImageCapture = () => {
 
       const formData = new FormData();
       formData.append('image', blob, 'capture.png');
+      formData.append('current_section', sections.value.at(-1) || '');
 
       fetch('https://api-clarify.midnightsky.net/api/new_image', {
         method: 'POST',
