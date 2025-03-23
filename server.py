@@ -28,10 +28,10 @@ last_image = None
 session: Session | None = None
 
 class Response(BaseModel):
+    explanation: str
     notes: str
     problem: str
     update_notes: bool
-    explanation: str
 
 client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))
 
