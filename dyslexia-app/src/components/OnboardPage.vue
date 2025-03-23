@@ -51,7 +51,7 @@ body {
   height: 800px; 
   width: 800px; 
   background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
-  animation: down 20s infinite; 
+  animation: down 10s infinite; 
 }
 
 #down {
@@ -59,7 +59,7 @@ body {
   height: 500px; 
   width: 500px;
   background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
-  animation: up 20s infinite;
+  animation: up 10s infinite;
 }
 
 .overlay {
@@ -82,11 +82,11 @@ body {
 }
 
 .overlay b {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .overlay p {
-  font-size: 30px;
+  font-size: 20px;
   max-width: 800px;
   margin-top: 50px;
   line-height: 1.5;
@@ -106,7 +106,7 @@ body {
 
 .overlay button {
   padding: 20px 40px;
-  font-size: 1.5rem;
+  font-size: 20px;
   margin-top: 60px;
   border: none;
   border-radius: 8px;
@@ -115,6 +115,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .overlay button:hover {
