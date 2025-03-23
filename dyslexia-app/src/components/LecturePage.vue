@@ -77,10 +77,8 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
 
 .lecture-page {
-  font-family: 'Lexend', sans-serif;
   padding: 20px;
   background-color: #f5f7f9;
   color: #1e1e1e;
@@ -124,7 +122,6 @@ video {
   max-height: 400px;
   overflow-y: auto;
   line-height: 1.8;
-  font-family: 'Lexend', sans-serif;
   font-size: 16px;
   letter-spacing: 0.02em;
   font-size: 18px;

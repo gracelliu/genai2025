@@ -31,7 +31,6 @@
 
   <style scoped>
 .welcome-page {
-  font-family: Arial, sans-serif;
   padding: 20px;
   background-color: #f4f6f8;
 }
@@ -62,9 +61,11 @@ ul {
 }
 
 li {
-  margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
 }
+
 
 a {
   text-decoration: none;

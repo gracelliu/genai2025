@@ -32,7 +32,6 @@ body {
   min-height: 100vh;
   background-image: linear-gradient(80deg, rgb(5,124,172), rgb(199,10,114));
   overflow: hidden; 
-  font-family: 'Lexend', sans-serif;
   color: white;
 }
 
@@ -97,7 +96,6 @@ body {
 .overlay button {
   padding: 20px 40px;
   font-size: 1.4rem;
-  font-family: 'Lexend', sans-serif;
   border: none;
   border-radius: 8px;
   background-color: #ffe28a;

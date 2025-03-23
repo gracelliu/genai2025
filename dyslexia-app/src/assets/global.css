@@ -1,4 +1,9 @@
+/* src/assets/global.css */
 body {
     font-family: 'Lexend', sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    color: #1e1e1e;
   }
   
