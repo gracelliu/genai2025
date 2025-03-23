@@ -131,7 +131,8 @@ h2 {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
-  text-decoration: none; /* removes underline from link */
+  text-decoration: none; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .shimmer-button:hover {
