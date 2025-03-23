@@ -31,6 +31,7 @@ class Response(BaseModel):
     notes: str
     problem: str
     update_notes: bool
+    explanation: str
 
 client = genai.Client(api_key=os.getenv("GENAI_API_KEY"))
 
@@ -76,6 +77,7 @@ def new_image():
         "notes: str - The notes taken from the second image"
         "problem: str - The problem with the images, if any"
         "update_notes: bool - Whether you have update the notes to be up to date"
+        "explanation: str - An explanation of why you put the values you did for the three above fields."
         ""
         "The next message will contain what is currently in the notes."
     )
