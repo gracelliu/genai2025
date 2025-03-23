@@ -229,30 +229,6 @@ export default {
 }
 
 
-.tts-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #e69dee; /* purple default */
-  color: #000;
-  padding: 8px 14px;
-  font-size: 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 16px;
-  transition: background-color 0.3s ease;
-}
-
-.tts-button.playing {
-  background-color: #b9e6a4; /* green when playing */
-}
-
-.tts-button:hover {
-  /* Disable hover effect */
-  background-color: inherit;
-}
 
 
 /* Contrast Modes */
