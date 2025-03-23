@@ -11,6 +11,8 @@ import os
 
 from googledocs import authenticate_google_docs, add_to_doc, create_doc_with_text
 
+from dotenv import load_dotenv
+load_dotenv()
 
 class Response(BaseModel):
     problem: str
