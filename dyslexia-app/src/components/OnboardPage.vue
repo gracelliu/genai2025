@@ -106,7 +106,7 @@ body {
 
 .overlay button {
   padding: 20px 40px;
-  font-size: 1.5rem;
+  font-size: 20px;
   margin-top: 60px;
   border: none;
   border-radius: 8px;
