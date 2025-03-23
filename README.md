@@ -2,9 +2,6 @@
   <img src="dyslexia-app/src/assets/big_logo.png" alt="Clarity Logo" width="600" />
 </p>
 
-<h1 align="center">Clarity</h1>
-<h3 align="center">A Dyslexia Tool In The Classroom</h3>
-
 ---
 
 ## 🧠 About Clarity
@@ -34,15 +31,34 @@ With Clarity, students can customize their experience to suit their learning nee
 
 ---
 
-## 🖼️ Screenshots
-
-> Coming soon! (Or drop some screenshots here using Markdown)
-
----
-
 ## 🚀 Getting Started
 
 ### 📦 Install Dependencies
 
 ```bash
 npm install
+```
+
+### ▶️ Run the App Locally
+
+```bash
+npm run serve
+```
+
+Then visit: `http://localhost:8080/`
+
+---
+
+## 👩🏽‍💻 Team
+
+Made with 💜 at a hackathon by students who care about accessibility in education.
+
+---
+
+## 📄 License
+
+MIT — free to use and adapt. Give credit where it’s due ✨
+
+---
+
+> “If they can’t learn the way we teach, maybe we should teach the way they learn.” – Ignacio Estrada
