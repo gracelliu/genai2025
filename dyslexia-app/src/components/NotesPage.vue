@@ -33,6 +33,11 @@
         <option value="high">High Contrast</option>
       </select>
     </div>
+    <!-- 🔊 Text-to-Speech Button -->
+  <button class="tts-button" @click="speakText">
+    <i class="fas fa-volume-up"></i> Listen
+  </button>
+
   </div>
 
   <p>Write your notes here...</p>
@@ -44,16 +49,16 @@
   </template>
   
   <script>
+  import axios from 'axios';
+  import { marked } from 'marked';
+  
   export default {
     name: 'NotesPage',
     data() {
       return {
-        currentFont: 'opendyslexic',
-        contrastMode: "default"
-
+        currentFont: 'opendyslexic'
       };
     },
-
     computed: {
       courseCode() {
         return this.$route.params.courseCode;
@@ -66,9 +71,6 @@
     toggleFont() {
       this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
     }
-   
-
-    
   }
   };
   </script>
@@ -111,8 +113,14 @@
     color: #1e1e1e;
   }
   
-  /* 🔵 Background blob animation */
-  #up, #down {
+  .document-block {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #up,
+  #down {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
@@ -145,6 +153,7 @@
     z-index: 1;
     padding: 60px 40px;
   }
+  
   .lexend-font {
   font-family: 'Lexend', sans-serif;
 }
@@ -153,71 +162,25 @@
   font-family: 'OpenDyslexic', sans-serif;
 }
 
-
-
-/* Contrast Modes */
-.default-contrast {
-  background-color: #f0f4ff;
-  color: #1e1e1e;
-}
-.light-contrast {
-  background-color: #fff9db;
+.font-toggle {
+  background-color: #ffe28a;
   color: #000;
-}
-.dark-contrast {
-  background-color: #1e1e1e;
-  color: #f4f4f4;
-}
-.high-contrast {
-  background-color: #ffff00;
-  color: #000;
-}
-
-/* Dropdown styling */
-.contrast-selector {
-  margin-top: 16px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#contrastMode {
-  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
   font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  outline: none;
-}
-.accessibility-controls {
-  display: flex;
-  gap: 24px;
+  transition: background-color 0.3s ease;
   margin-bottom: 16px;
-  align-items: center;
-  justify-content: flex-start;
 }
-
-.selector {
-  display: flex;
-  flex-direction: column;
-}
-
-.selector label {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.selector select {
-  padding: 6px 10px;
-  font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  outline: none;
+.font-toggle:hover {
+  background-color: #ffd65a;
 }
 
   @keyframes down {
-    0%, 100% {
+    0%,
+    100% {
       top: -100px;
     }
     70% {
@@ -226,7 +189,8 @@
   }
   
   @keyframes up {
-    0%, 100% {
+    0%,
+    100% {
       bottom: -100px;
     }
     70% {

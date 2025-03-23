@@ -17,13 +17,17 @@
       <div class="transcript">
         <div class="transcript-header">
           <h2>Live Transcript</h2>
-          <button @click="openInGoogleDocs">Open in Google Docs</button>
+          <div class="meta-inputs">
+            <input v-model="customTitle" placeholder="Lecture Title" />
+            <input v-model="customGroup" placeholder="Course Code" />
+            <button @click="saveTranscriptToDatabase">Save</button>
+          </div>
         </div>
         <transition name="fade">
           <div class="transcript-body" ref="transcriptBody" :key="fadeKey">
             <div v-for="(section, sIndex) in sections" :key="sIndex" class="transcript-section">
               <div v-html="renderMarkdown(section)"></div>
-              <hr v-if="sIndex < sections.length - 1"/>
+              <hr v-if="sIndex < sections.length - 1" />
             </div>
           </div>
         </transition>
@@ -33,31 +37,58 @@
 </template>
 
 <script setup>
-import {ref, onMounted, nextTick} from 'vue';
-// import {useRoute} from 'vue-router';
-import {marked} from 'marked';
+import { ref, onMounted, nextTick } from 'vue';
+import { useRoute } from 'vue-router';
+import { marked } from 'marked';
+
+const route = useRoute();
 
 const courseCode = ref('');
 const courseTitle = ref('');
+const customTitle = ref('');
+const customGroup = ref('');
 const sections = ref([]);
 const webcam = ref(null);
 const fadeKey = ref(0);
 const transcriptBody = ref(null);
 
 const startWebcam = () => {
-  navigator.mediaDevices.getUserMedia({video: true})
-      .then(stream => {
-        if (webcam.value) {
-          webcam.value.srcObject = stream;
-        }
-      })
-      .catch(err => {
-        console.error("Webcam error:", err);
-      });
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      if (webcam.value) {
+        webcam.value.srcObject = stream;
+      }
+    })
+    .catch(err => {
+      console.error("Webcam error:", err);
+    });
 };
 
-const openInGoogleDocs = () => {
-  window.open("https://docs.google.com/", "_blank");
+const saveTranscriptToDatabase = async () => {
+  const joinedMarkdown = sections.value.join('\n\n---\n\n');
+
+  const payload = {
+    title: customTitle.value || route.params.lectureId,
+    group: customGroup.value || route.params.course,
+    content: joinedMarkdown
+  };
+
+  try {
+    const response = await fetch('http://localhost:8000/api/document/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json();
+    console.log('Saved to database:', result);
+    alert('Transcript saved to the database.');
+  } catch (err) {
+    console.error('Save failed:', err);
+    alert('Error saving transcript.');
+  }
 };
 
 const startImageCapture = () => {
@@ -83,32 +114,34 @@ const startImageCapture = () => {
         method: 'POST',
         body: formData
       })
-          .then(res => res.json())
-          .then(data => {
-            const updatedSection = data.current_section;
-            const prevScrollTop = transcriptBody.value?.scrollTop ?? 0;
-            if (data.new_section) {
-              sections.value.push(updatedSection);
-              fadeKey.value++;
-            } else if (sections.value.length > 0) {
-              const currSection = sections.value.at(-1);
-              if (updatedSection !== currSection) {
-                sections.value[sections.value.length - 1] = updatedSection;
-                fadeKey.value++;
-              }
-            } else {
-              sections.value.push(updatedSection);
+        .then(res => res.json())
+        .then(data => {
+          const updatedSection = data.current_section;
+          const prevScrollTop = transcriptBody.value?.scrollTop ?? 0;
+
+          if (data.new_section) {
+            sections.value.push(updatedSection);
+            fadeKey.value++;
+          } else if (sections.value.length > 0) {
+            const currSection = sections.value.at(-1);
+            if (updatedSection !== currSection) {
+              sections.value[sections.value.length - 1] = updatedSection;
               fadeKey.value++;
             }
-            nextTick(() => {
-              if (transcriptBody.value) {
-                transcriptBody.value.scrollTop = prevScrollTop;
-              }
-            });
-          })
-          .catch(err => {
-            console.error("Image capture error:", err);
+          } else {
+            sections.value.push(updatedSection);
+            fadeKey.value++;
+          }
+
+          nextTick(() => {
+            if (transcriptBody.value) {
+              transcriptBody.value.scrollTop = prevScrollTop;
+            }
           });
+        })
+        .catch(err => {
+          console.error("Image capture error:", err);
+        });
     }, 'image/png');
   }, 4000);
 };
@@ -123,10 +156,10 @@ onMounted(() => {
 
   startImageCapture();
 });
+
 const renderMarkdown = (text) => {
-  return marked.parse(text);
+  return marked.parse(text || '');
 };
-renderMarkdown("")
 </script>
 
 <style scoped>
@@ -139,60 +172,6 @@ renderMarkdown("")
   color: #1e1e1e;
 }
 
-/* Background animation blobs */
-#up, #down {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  z-index: 0;
-  animation-duration: 10s;
-  animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
-}
-
-#up {
-  height: 800px;
-  width: 800px;
-  background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
-  top: -200px;
-  left: -200px;
-  animation-name: down;
-}
-
-#down {
-  height: 500px;
-  width: 500px;
-  background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
-  bottom: -150px;
-  right: -150px;
-  animation-name: up;
-}
-
-@keyframes down {
-  0%, 100% {
-    top: -100px;
-  }
-  70% {
-    top: 700px;
-  }
-}
-
-@keyframes up {
-  0%, 100% {
-    bottom: -100px;
-  }
-  70% {
-    bottom: 700px;
-  }
-}
-
-.overlay {
-  position: relative;
-  z-index: 1;
-  padding: 60px 40px;
-}
-
-/* Existing styles */
 .header {
   text-align: left;
   margin-bottom: 20px;
@@ -204,7 +183,8 @@ renderMarkdown("")
   flex-wrap: wrap;
 }
 
-.webcam, .transcript {
+.webcam,
+.transcript {
   flex: 1;
   min-width: 300px;
   background: white;
@@ -222,18 +202,25 @@ video {
 
 .transcript-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.meta-inputs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
   align-items: center;
 }
 
-.transcript-body {
-  margin-top: 10px;
-  max-height: 400px;
-  overflow-y: auto;
-  line-height: 1.8;
-  font-family: 'Lexend', sans-serif;
-  letter-spacing: 0.02em;
-  font-size: 18px;
+.meta-inputs input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  flex-grow: 1;
+  min-width: 120px;
 }
 
 button {
@@ -243,21 +230,31 @@ button {
   padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 button:hover {
   background-color: #265ecf;
 }
 
-.fade-enter-active {
-  transition: opacity 0.6s ease;
-}
-
-.fade-enter-from {
-  opacity: 0;
+.transcript-body {
+  max-height: 400px;
+  overflow-y: auto;
+  line-height: 1.8;
+  font-family: 'Lexend', sans-serif;
+  letter-spacing: 0.02em;
+  font-size: 18px;
 }
 
 .transcript-section {
   margin-bottom: 20px;
+}
+
+.fade-enter-active {
+  transition: opacity 0.6s ease;
+}
+.fade-enter-from {
+  opacity: 0;
 }
 </style>
