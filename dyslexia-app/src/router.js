@@ -3,12 +3,14 @@ import OnboardPage from './components/OnboardPage.vue';
 import WelcomePage from './components/WelcomePage.vue';
 import CoursePage from './components/CoursePage.vue';
 import LecturePage from './components/LecturePage.vue';
+import NotesPage from './components/NotesPage.vue'; 
 
 const routes = [
   { path: '/', name: 'Onboarding', component: OnboardPage }, // default route
   { path: '/home', name: 'Home', component: WelcomePage },
   { path: '/course/:courseCode', name: 'Course', component: CoursePage },
-  { path: '/lecture/:course/:lectureId', name: 'Lecture', component: LecturePage }
+  { path: '/lecture/:course/:lectureId', name: 'Lecture', component: LecturePage },
+  { path: '/notes/:courseCode/:lectureId', name: 'Notes', component: NotesPage } 
 ];
 
 const router = createRouter({
