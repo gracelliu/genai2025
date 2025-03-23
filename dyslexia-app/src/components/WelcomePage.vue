@@ -32,7 +32,7 @@
                     <ul>
                         <li v-for="(lecture, index) in recentLectures" :key="index">
                             <router-link :to="`/notes/${lecture.id}`">
-                                📘 Lecture {{ lecture.id }}: {{ lecture.title }} - {{ lecture.group }}
+                                📘 Lecture {{ lecture.id }}: {{ lecture.title }}
                             </router-link>
                         </li>
                     </ul>
