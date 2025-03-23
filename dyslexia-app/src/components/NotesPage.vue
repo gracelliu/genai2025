@@ -54,7 +54,8 @@
     name: 'NotesPage',
     data() {
       return {
-        currentFont: 'opendyslexic'
+        currentFont: 'opendyslexic',
+        contrastMode: "default"
       };
     },
     computed: {
@@ -68,9 +69,20 @@
     methods: {
     toggleFont() {
       this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
+    },
+    speakText() {
+      const text = "Write your notes here..."; // 🔁 replace with dynamic note content if needed
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1; // normal speed
+      utterance.pitch = 1; // normal tone
+      speechSynthesis.speak(utterance);
     }
-  }
+    }
   };
+
+
+
+
   </script>
   
   <style scoped>
