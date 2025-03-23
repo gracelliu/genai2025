@@ -14,7 +14,12 @@
   
         <div class="notes-container">
           <h2 class="notes-title">Notes</h2>
-          <div class="notes-content">
+          <button @click="toggleFont" class="font-toggle">
+            Use {{ currentFont === 'opendyslexic' ? 'Lexend' : 'OpenDyslexic' }} Font
+          </button>
+
+          <div class="notes-content" :class="currentFont === 'lexend' ? 'lexend-font' : 'opendyslexic-font'">
+
             <p>Write your notes here...</p>
           </div>
         </div>
@@ -25,6 +30,12 @@
   <script>
   export default {
     name: 'NotesPage',
+    data() {
+      return {
+        currentFont: 'opendyslexic'
+      };
+    },
+
     computed: {
       courseCode() {
         return this.$route.params.courseCode;
@@ -32,7 +43,12 @@
       lectureId() {
         return this.$route.params.lectureId;
       }
+    },
+    methods: {
+    toggleFont() {
+      this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
     }
+  }
   };
   </script>
   
@@ -80,7 +96,7 @@
     border-radius: 50%;
     filter: blur(80px);
     z-index: 0;
-    animation-duration: 20s;
+    animation-duration: 10s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
   }
@@ -108,7 +124,30 @@
     z-index: 1;
     padding: 60px 40px;
   }
-  
+  .lexend-font {
+  font-family: 'Lexend', sans-serif;
+}
+
+.opendyslexic-font {
+  font-family: 'OpenDyslexic', sans-serif;
+}
+
+.font-toggle {
+  background-color: #ffe28a;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 16px;
+}
+.font-toggle:hover {
+  background-color: #ffd65a;
+}
+
   @keyframes down {
     0%, 100% {
       top: -100px;
