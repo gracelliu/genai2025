@@ -1,36 +1,45 @@
 <template>
   <div class="lecture-page">
-    <!-- Top Bar -->
-    <div class="header">
-      <h1>Clarify Mode</h1>
-    </div>
+    <!-- Background blobs -->
+    <section id="up"></section>
+    <section id="down"></section>
 
-    <!-- Main Content -->
-    <div class="content">
-      <!-- Webcam Feed -->
-      <div class="webcam">
-        <h2>Your Webcam</h2>
-        <video ref="webcam" autoplay playsinline muted></video>
+    <!-- Foreground content -->
+    <div class="overlay">
+      <div class="header">
+        <h1>Clarify Mode</h1>
       </div>
 
-      <!-- Transcript Section -->
-      <div class="transcript">
-        <div class="transcript-header">
-          <h2>Live Transcript</h2>
-          <div class="meta-inputs">
-            <input v-model="customTitle" placeholder="Lecture Title" />
-            <input v-model="customGroup" placeholder="Course Code" />
-            <button @click="saveTranscriptToDatabase">Save</button>
-          </div>
+      <div class="content">
+        <!-- Webcam Feed -->
+        <div class="webcam">
+          <h2>Your Webcam</h2>
+          <video ref="webcam" autoplay playsinline muted></video>
         </div>
-        <transition name="fade">
-          <div class="transcript-body" ref="transcriptBody" :key="fadeKey">
-            <div v-for="(section, sIndex) in sections" :key="sIndex" class="transcript-section">
-              <div v-html="renderMarkdown(section)"></div>
-              <hr v-if="sIndex < sections.length - 1" />
+
+        <!-- Transcript Section -->
+        <div class="transcript">
+          <div class="transcript-header">
+            <h2>Live Transcript</h2>
+            <div class="meta-inputs">
+              <input v-model="customTitle" placeholder="Lecture Title" />
+              <input v-model="customGroup" placeholder="Course Code" />
+              <button @click="saveTranscriptToDatabase">Save</button>
             </div>
           </div>
-        </transition>
+          <transition name="fade">
+            <div class="transcript-body" ref="transcriptBody" :key="fadeKey">
+              <div
+                v-for="(section, sIndex) in sections"
+                :key="sIndex"
+                class="transcript-section"
+              >
+                <div v-html="renderMarkdown(section)"></div>
+                <hr v-if="sIndex < sections.length - 1" />
+              </div>
+            </div>
+          </transition>
+        </div>
       </div>
     </div>
   </div>
@@ -43,8 +52,6 @@ import { marked } from 'marked';
 
 const route = useRoute();
 
-// const courseCode = ref('');
-// const courseTitle = ref('');
 const customTitle = ref('');
 const customGroup = ref('');
 const sections = ref([]);
@@ -66,7 +73,6 @@ const startWebcam = () => {
 
 const saveTranscriptToDatabase = async () => {
   const joinedMarkdown = sections.value.join('\n\n---\n\n');
-
   const payload = {
     title: customTitle.value || route.params.lectureId,
     group: customGroup.value || route.params.course,
@@ -149,12 +155,6 @@ const startImageCapture = () => {
 
 onMounted(() => {
   startWebcam();
-
-  // const course = route.params.course;
-  // const lectureId = route.params.lectureId;
-  // courseCode.value = course;
-  // courseTitle.value = `${course} Lecture: ${lectureId}`;
-
   startImageCapture();
 });
 
@@ -171,6 +171,61 @@ const renderMarkdown = (text) => {
   padding: 20px;
   background-color: #f5f7f9;
   color: #1e1e1e;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+#up, #down {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+#up {
+  height: 800px;
+  width: 800px;
+  background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
+  top: -200px;
+  left: -200px;
+  animation-name: down;
+}
+
+#down {
+  height: 500px;
+  width: 500px;
+  background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
+  bottom: -150px;
+  right: -150px;
+  animation-name: up;
+}
+
+@keyframes down {
+  0%, 100% {
+    top: -100px;
+  }
+  70% {
+    top: 700px;
+  }
+}
+
+@keyframes up {
+  0%, 100% {
+    bottom: -100px;
+  }
+  70% {
+    bottom: 700px;
+  }
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  padding: 60px 40px;
 }
 
 .header {
