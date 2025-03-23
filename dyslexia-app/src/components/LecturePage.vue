@@ -149,10 +149,10 @@ const startImageCapture = () => {
 onMounted(() => {
   startWebcam();
 
-  const course = route.params.course;
-  const lectureId = route.params.lectureId;
-  courseCode.value = course;
-  courseTitle.value = `${course} Lecture: ${lectureId}`;
+  // const course = route.params.course;
+  // const lectureId = route.params.lectureId;
+  // courseCode.value = course;
+  // courseTitle.value = `${course} Lecture: ${lectureId}`;
 
   startImageCapture();
 });
