@@ -4,10 +4,14 @@
     <section id="down"></section>
 
     <div class="overlay">
-      <h1>LexiSee</h1>
+      <h1>Clarity</h1>
+      <b>
+        A Dyslexia Tool
+      </b>
       <p>
-        LexiSee is an accessibility-focused tool designed to support individuals with dyslexia by converting handwritten text into clear, simplified course notes using dyslexia-friendly fonts like Lexend. Built to ease comprehension and boost learning confidence.
+        Clarity is an accessibility-focused tool designed to support individuals with dyslexia by converting handwritten text into clear, simplified course notes using dyslexia-friendly fonts like Lexend. Built to ease comprehension and boost learning confidence.
       </p>
+
       <a href="https://www.dyslexia.com/about-dyslexia/" target="_blank">Learn more about dyslexia here</a>
       <button @click="goToHome">Get Started</button>
     </div>
@@ -70,21 +74,28 @@ body {
 }
 
 .overlay h1 {
+  margin-top: -20px;
+  font-style: italic;
   font-size: 7rem;
-  margin: 0 0 25px 0;
+  margin-bottom: -10px;
+}
+
+.overlay b {
+  font-size: 30px;
 }
 
 .overlay p {
-  font-size: 1.3rem;
+  font-size: 30px;
   max-width: 800px;
-  margin: 0 0 25px 0;
+  margin-top: 50px;
   line-height: 1.5;
+  margin-bottom: 10px;
 }
 
 .overlay a {
-  font-size: 0.9rem;
-  color: black;
-  text-decoration: none;
+  font-size: 20px;
+  color: blueviolet;
+  text-decoration: underline;
   margin-bottom: 35px;
 }
 
@@ -95,10 +106,11 @@ body {
 
 .overlay button {
   padding: 20px 40px;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  margin-top: 30px;
   border: none;
   border-radius: 8px;
-  background-color: #ffe28a;
+  background-color: rgb(222, 97, 233);
   color: #000;
   font-weight: bold;
   cursor: pointer;
