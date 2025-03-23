@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/full_logo.png" alt="Clarity Logo" width="300" />
+  <img src="dyslexia-app/src/assets/full_logo.png" alt="Clarity Logo" width="300" />
 </p>
 
 <h1 align="center">Clarity</h1>
