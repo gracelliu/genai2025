@@ -54,7 +54,8 @@ def new_image():
     image = Part.from_bytes(data=image_data, mime_type="image/png")
 
     prompt = (
-        "Look at these two images, if the image is not of a board or lecture with text, set problem to 'INVALID'"
+        "Look at these two images, the second of which is the current most up-to-date version."
+        "If the image is not of a board or lecture with text, set problem to 'INVALID'"
         "Otherwise, perform the following task:"
         "Decide if there is anything added or removed in the second image that is not in the first image. You are also"
         "provided with the current notes recorded, if they are incomplete or there is new content images are different,"
