@@ -74,7 +74,7 @@ const saveTranscriptToDatabase = async () => {
   };
 
   try {
-    const response = await fetch('http://localhost:8000/api/document/create', {
+    const response = await fetch('https://api-clarify.midnightsky.net/api/document/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ const startImageCapture = () => {
       const formData = new FormData();
       formData.append('image', blob, 'capture.png');
 
-      fetch('http://localhost:8000/api/new_image', {
+      fetch('https://api-clarify.midnightsky.net/api/new_image', {
         method: 'POST',
         body: formData
       })

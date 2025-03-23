@@ -49,8 +49,6 @@
   </template>
   
   <script>
-  import axios from 'axios';
-  import { marked } from 'marked';
   
   export default {
     name: 'NotesPage',

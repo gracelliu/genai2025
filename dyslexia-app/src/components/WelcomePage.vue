@@ -231,7 +231,7 @@ export default {
   methods: {
     async fetchCoursesFromDB() {
       try {
-        const res = await axios.get("http://localhost:8000/api/document/list");
+        const res = await axios.get("https://api-clarify.midnightsky.net/api/document/list");
         const documents = res.data;
 
         // Extract unique group codes (i.e., course codes)
