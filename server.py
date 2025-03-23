@@ -108,6 +108,7 @@ def new_image():
     print(f"Problem: {response.problem}")
     print(f"Edits: {response.update_notes}")
     print(f"Notes: {response.notes}")
+    print(f"Explanation: {response.explanation}")
 
     return {
         "new_section": new_section_flag,
