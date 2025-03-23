@@ -84,7 +84,7 @@ body {
 
 .overlay a {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: black;
   text-decoration: none;
   margin-bottom: 35px;
 }
