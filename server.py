@@ -24,7 +24,6 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 sections = []
-current_section = ""
 last_image = None
 session: Session | None = None
 
@@ -43,12 +42,13 @@ def clear_console():
 
 @app.route('/api/new_image', methods=['POST'])
 def new_image():
-    global current_section, sections, last_image
+    global sections, last_image
 
     if 'image' not in request.files:
         return {"error": "No image uploaded"}, 400
 
     uploaded_file = request.files['image']
+    current_section = request.form['current_section']
     image_data = uploaded_file.read()
     image = Part.from_bytes(data=image_data, mime_type="image/png")
 
@@ -64,7 +64,7 @@ def new_image():
         " then set problem to '' and update_notes to false but STILL output the notes. Additionally, if the board is obstructed, "
         "set problem to 'OBSTRUCTED'. If the two images are of different slides or boards, "
         "set problem to 'NEW_SECTION' to indicate that we are dealing with a different part of the lecture now, importantly though, "
-        "if the board has not update_notes but is just not in view or obstructed. Output 'OBSTRUCTED' as the problem, only output NEW_SECTION "
+        "if the board is just not in view or obstructed. Output 'OBSTRUCTED' as the problem, only output NEW_SECTION "
         "once there is a new slide or board."
         " and return notes on this new lecture piece. Use problem=NEW_SECTION sparingly, only when "
         "the images are two different slides/lessons. To ensure consistency, you must not"
