@@ -140,9 +140,6 @@ renderMarkdown("")
   padding: 20px;
   background-color: #f5f7f9;
   color: #1e1e1e;
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
 }
 
 /* Background animation blobs */
