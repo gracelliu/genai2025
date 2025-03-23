@@ -36,7 +36,12 @@
 }
 
 h1 {
-  margin-bottom: 24px;
+    font-size: 40px;
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-size: 30px;
 }
 
 .content {
@@ -50,7 +55,9 @@ h1 {
   flex: 1;
   min-width: 280px;
   background: white;
-  padding: 20px;
+  padding: 30px;
+  padding-left: 40px;
+  padding-bottom: 50px;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -61,7 +68,7 @@ ul {
 }
 
 li {
-  font-size: 18px;
+  font-size: 25px;
   letter-spacing: 0.03em;
   line-height: 1.6;
 }
@@ -84,9 +91,18 @@ a:hover {
     data() {
       return {
         recentLectures: [
-          { number: 9, title: "Loops", course: "CSC100" },
-          { number: 4, title: "Derivatives", course: "MAT100" },
-          { number: 6, title: "Probability", course: "STA100" }
+            { number: 9, title: "Loops", course: "CSC100" },
+            { number: 4, title: "Derivatives", course: "MAT100" },
+            { number: 6, title: "Probability", course: "STA100" },
+            { number: 2, title: "Logical Statements", course: "CSC100" },
+            { number: 5, title: "Mendelian Genetics", course: "BIO100" },
+            { number: 3, title: "Chemical Bonding", course: "CHM100" },
+            { number: 7, title: "Newton’s Laws", course: "PHY100" },
+            { number: 8, title: "Hypothesis Testing", course: "STA100" },
+            { number: 6, title: "Functions and Graphs", course: "MAT100" },
+            { number: 10, title: "Python Functions", course: "CSC100" },
+            { number: 1, title: "Introduction to Biology", course: "BIO100" },
+            { number: 11, title: "Acid-Base Reactions", course: "CHM100" }
         ],
         courses: ["CSC100", "MAT100", "STA100", "BIO100", "CHM100", "PHY100"]
       };
