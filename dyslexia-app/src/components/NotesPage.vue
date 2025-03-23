@@ -121,6 +121,19 @@ export default {
         };
       }
     },
+    async deleteDocument() {
+        const confirmDelete = confirm("Are you sure you want to delete this lecture?");
+        if (!confirmDelete) return;
+  
+        try {
+          await axios.delete("https://api-clarify.midnightsky.net/api/document/delete", {
+            data: { id: this.docId }
+          });
+          this.$router.push("/");
+        } catch (error) {
+          console.error("Failed to delete lecture:", error);
+        }
+      },
     renderMarkdown(text) {
       return marked.parse(text || '');
     }
@@ -130,6 +143,9 @@ export default {
   }
 };
 </script>
+
+
+
 
 <style scoped>
 .notes-page {
