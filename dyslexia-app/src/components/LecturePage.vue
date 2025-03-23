@@ -42,6 +42,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Toast notification -->
+    <div v-if="showToast" class="toast">
+      Transcript saved to the database ✅
+    </div>
   </div>
 </template>
 
@@ -58,6 +63,7 @@ const sections = ref([]);
 const webcam = ref(null);
 const fadeKey = ref(0);
 const transcriptBody = ref(null);
+const showToast = ref(false);
 
 const startWebcam = () => {
   navigator.mediaDevices.getUserMedia({ video: true })
@@ -90,7 +96,10 @@ const saveTranscriptToDatabase = async () => {
 
     const result = await response.json();
     console.log('Saved to database:', result);
-    alert('Transcript saved to the database.');
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    }, 3000);
   } catch (err) {
     console.error('Save failed:', err);
     alert('Error saving transcript.');
@@ -312,5 +321,26 @@ button:hover {
 }
 .fade-enter-from {
   opacity: 0;
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 30px;
+  background-color: #4caf50;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: fadeInOut 3s ease forwards;
+  font-weight: bold;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-10px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
 }
 </style>
