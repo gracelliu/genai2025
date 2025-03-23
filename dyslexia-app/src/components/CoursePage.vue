@@ -142,7 +142,7 @@ button:hover {
   border-radius: 50%;
   filter: blur(80px);
   z-index: 0;
-  animation-duration: 20s;
+  animation-duration: 10s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }

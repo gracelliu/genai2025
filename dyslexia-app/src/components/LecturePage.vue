@@ -142,6 +142,60 @@ renderMarkdown("")
   color: #1e1e1e;
 }
 
+/* Background animation blobs */
+#up, #down {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+#up {
+  height: 800px;
+  width: 800px;
+  background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
+  top: -200px;
+  left: -200px;
+  animation-name: down;
+}
+
+#down {
+  height: 500px;
+  width: 500px;
+  background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
+  bottom: -150px;
+  right: -150px;
+  animation-name: up;
+}
+
+@keyframes down {
+  0%, 100% {
+    top: -100px;
+  }
+  70% {
+    top: 700px;
+  }
+}
+
+@keyframes up {
+  0%, 100% {
+    bottom: -100px;
+  }
+  70% {
+    bottom: 700px;
+  }
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  padding: 60px 40px;
+}
+
+/* Existing styles */
 .header {
   text-align: left;
   margin-bottom: 20px;

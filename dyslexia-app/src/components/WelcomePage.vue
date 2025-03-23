@@ -65,7 +65,7 @@
   border-radius: 50%;
   filter: blur(80px);
   z-index: 0;
-  animation-duration: 20s;
+  animation-duration: 10s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
@@ -120,21 +120,23 @@ h2 {
 .shimmer-button {
   display: inline-block;
   text-align: center;
-  padding: 16px 32px;
-  font-size: 18px;
+  padding: 20px 40px;
+  font-size: 20px;
   font-weight: 600;
   border-radius: 10px;
   color: white;
-  background: linear-gradient(120deg, #c084fc, #a78bfa, #d8b4fe);
+  background: linear-gradient(120deg, #b57af1, #734af0, #e2c7ff);
   background-size: 300% 300%;
   animation: shimmer 3s ease infinite;
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease;
-  text-decoration: none; /* removes underline from link */
+  text-decoration: none; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
 .shimmer-button:hover {
+text-decoration: none !important;
   transform: scale(1.05);
 }
 
