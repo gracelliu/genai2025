@@ -234,11 +234,9 @@ export default {
         const documents = res.data;
 
         // Extract unique group codes (i.e., course codes)
-        const uniqueGroups = [
+        this.courses = [
           ...new Set(documents.map(doc => doc.group?.trim()).filter(Boolean))
         ];
-
-        this.courses = uniqueGroups;
       } catch (err) {
         console.error("Failed to load courses:", err);
       }
