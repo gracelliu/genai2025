@@ -70,9 +70,6 @@
                 <h3>{{ matchedDocument.title }}</h3>
                 <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
                 <div v-html="renderMarkdown(matchedDocument.content)"></div>
-                <button class="delete-button" @click="deleteDocument">
-                  Delete Lecture
-                </button>
               </div>
             </div>
           </div>
