@@ -74,7 +74,7 @@ def new_image():
         "confusing, elaborate a bit, they should be readable notes."
         ""
         "Schema: (output in this order)"
-        "notes: str - What you see from the second image, as notes."
+        "notes: str - What you see from the second image, as notes. Fully and fresh updated by you."
         "thinking: str - A short explanation of why you put the values you did for the three other fields."
         "problem: str - The problem with the images, if any"
         "update_notes: bool - Whether you have update the notes to be up to date"
@@ -82,7 +82,7 @@ def new_image():
         "The next message will contain what is currently in the notes."
     )
 
-    content = filter(lambda x: x is not None, [prompt, f"Here is the current version of this section of the notes: \n\"\"\"\n{current_section}\n\"\"\"\n If this is wrong or missing anything, output new notes taken from the 2nd image and set update_notes to true.", last_image, image])
+    content = filter(lambda x: x is not None, [prompt, f"Here is the current/old version of this section of the notes: \n\"\"\"\n{current_section}\n\"\"\"\n If this is wrong or missing anything, output new notes taken from the 2nd image and set update_notes to true.", last_image, image])
     raw = client.models.generate_content(
         model="gemini-2.0-flash",
         contents=content,
