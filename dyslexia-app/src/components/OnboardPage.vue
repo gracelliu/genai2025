@@ -82,11 +82,11 @@ body {
 }
 
 .overlay b {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .overlay p {
-  font-size: 30px;
+  font-size: 20px;
   max-width: 800px;
   margin-top: 50px;
   line-height: 1.5;

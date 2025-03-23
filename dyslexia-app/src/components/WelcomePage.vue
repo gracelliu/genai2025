@@ -125,7 +125,7 @@ h2 {
   font-weight: 600;
   border-radius: 10px;
   color: white;
-  background: linear-gradient(120deg, #9c40f8, #734af0, #e2c7ff);
+  background: linear-gradient(120deg, #b57af1, #734af0, #e2c7ff);
   background-size: 300% 300%;
   animation: shimmer 3s ease infinite;
   cursor: pointer;
@@ -136,6 +136,7 @@ h2 {
 }
 
 .shimmer-button:hover {
+text-decoration: none !important;
   transform: scale(1.05);
 }
 
