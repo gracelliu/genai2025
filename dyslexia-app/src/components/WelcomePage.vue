@@ -32,7 +32,7 @@
                     <ul>
                         <li v-for="(lecture, index) in recentLectures" :key="index">
                             <router-link :to="`/notes/${lecture.id}`">
-                                📘 Lecture {{ lecture.number }}: {{ lecture.title }} - {{ lecture.group }}
+                                📘 Lecture {{ lecture.id }}: {{ lecture.title }} - {{ lecture.group }}
                             </router-link>
                         </li>
                     </ul>
@@ -93,7 +93,7 @@
 
 
 h1 {
-    font-size: 40px;
+    font-size: 45px;
     margin-bottom: 24px;
 }
 
@@ -116,10 +116,12 @@ h2 {
 .shimmer-button {
     display: inline-block;
     text-align: center;
-    padding: 20px 40px;
-    font-size: 20px;
+    padding: 30px 60px;
+    margin-top: -30px;
+    /* margin-bottom: 20px; */
+    font-size: 25px;
     font-weight: 600;
-    border-radius: 10px;
+    border-radius: 30px;
     color: white;
     background: linear-gradient(120deg, #b57af1, #734af0, #e2c7ff);
     background-size: 300% 300%;

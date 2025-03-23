@@ -15,32 +15,44 @@
         </div>
   
         <div class="notes-container">
-          <h2 class="notes-title">Notes</h2>
+            <div class="notes-header-row">
+                <h2 class="notes-title">Notes</h2>
+                <button class="delete-button" @click="deleteDocument">
+                    Delete Lecture
+                </button>
+                </div>
+
   
           <div class="notes-content" :class="[currentFont + '-font', contrastMode + '-contrast']">
             <div class="accessibility-controls">
-              <div class="selector">
-                <label for="fontSelect">Font:</label>
-                <select id="fontSelect" v-model="currentFont">
-                  <option value="lexend">Lexend</option>
-                  <option value="opendyslexic">OpenDyslexic</option>
-                </select>
-              </div>
-  
-              <div class="selector">
-                <label for="contrastMode">Contrast:</label>
-                <select id="contrastMode" v-model="contrastMode">
-                  <option value="default">Default</option>
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                  <option value="high">High Contrast</option>
-                </select>
-              </div>
-  
-              <button class="tts-button" :class="{ playing: isPlaying }" @click="speakText">
-                <i class="fas fa-volume-up"></i> {{ isPlaying ? 'Playing' : 'Listen' }}
-              </button>
-            </div>
+  <div class="selector">
+    <label for="fontSelect">Font:</label>
+    <select id="fontSelect" v-model="currentFont">
+      <option value="lexend">Lexend</option>
+      <option value="opendyslexic">OpenDyslexic</option>
+    </select>
+  </div>
+
+  <div class="selector">
+    <label for="contrastMode">Contrast:</label>
+    <select id="contrastMode" v-model="contrastMode">
+      <option value="default">Default</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+      <option value="high">High Contrast</option>
+    </select>
+  </div>
+
+  <button class="tts-button" @click="toggleSpeech">
+    <i class="fas fa-volume-up"></i> {{ isPlaying ? (isPaused ? 'Resume' : 'Pause') : 'Play' }}
+  </button>
+</div>
+
+<!-- Progress Bar -->
+<div v-if="isPlaying" class="progress-container">
+  <div class="progress-bar" :style="{ width: progress + '%' }"></div>
+</div>
+
   
             <button class="edit-button" @click="toggleEdit">
               {{ isEditing ? 'Cancel' : 'Edit' }}
@@ -86,9 +98,13 @@
         contrastMode: "default",
         matchedDocument: null,
         isPlaying: false,
-        showDeleteToast: false,
+        isPaused: false,
+        progress: 0,
+        utterance: null,
+        intervalId: null,
+        editedContent: '',
         isEditing: false,
-        editedContent: ''
+        showDeleteToast: false
       };
     },
     computed: {
@@ -108,6 +124,53 @@
         };
         speechSynthesis.speak(utterance);
       },
+      toggleSpeech() {
+  if (!this.matchedDocument) return;
+
+  // Resume
+  if (this.isPaused) {
+    speechSynthesis.resume();
+    this.isPaused = false;
+    return;
+  }
+
+  // Pause
+  if (this.isPlaying) {
+    speechSynthesis.pause();
+    this.isPaused = true;
+    return;
+  }
+
+  // Fresh playback
+  const text = this.matchedDocument.content;
+  this.utterance = new SpeechSynthesisUtterance(text);
+  this.utterance.rate = 1;
+  this.utterance.pitch = 1;
+
+  this.isPlaying = true;
+  this.isPaused = false;
+  this.progress = 0;
+
+  const words = text.split(' ');
+  let currentWordIndex = 0;
+
+  // Estimate progress based on word count
+  this.utterance.onboundary = (event) => {
+    if (event.name === 'word') {
+      currentWordIndex++;
+      this.progress = Math.min(100, (currentWordIndex / words.length) * 100);
+    }
+  };
+
+  this.utterance.onend = () => {
+    this.isPlaying = false;
+    this.isPaused = false;
+    this.progress = 100;
+  };
+
+  speechSynthesis.cancel(); // Stop anything else playing
+  speechSynthesis.speak(this.utterance);
+},
       async fetchDocument() {
         try {
           const response = await axios.get('https://api-clarify.midnightsky.net/api/document/list');
@@ -275,6 +338,7 @@
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s ease;
+    margin-bottom: 20px;
   }
   .delete-button:hover {
     background-color: #f5c6cb;
@@ -313,6 +377,15 @@
     margin-top: 12px;
     resize: vertical;
   }
+
+
+  .notes-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
 
   /* animated toast */
   .toast {
@@ -379,4 +452,21 @@
     z-index: 1;
     padding: 60px 40px;
   }
+
+  .progress-container {
+  margin-top: 8px;
+  background-color: #ddd;
+  height: 8px;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #b9e6a4;
+  width: 0%;
+  transition: width 0.25s ease;
+}
+
   </style>
