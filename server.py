@@ -106,9 +106,11 @@ def new_image():
     if response.problem not in ['OBSTRUCTED', 'INVALID'] and response.update_notes:
         last_image = image
 
+    print('\n\n\n')
     print(f"Problem: {response.problem}")
     print(f"Edits: {response.update_notes}")
     print(f"Explanation: {response.thinking}")
+    print(f"Notes: {response.notes}")
 
     return {
         "new_section": new_section_flag,
