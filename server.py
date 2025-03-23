@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from document import create_session, get_user_by_name, get_documents_by_user, Document, get_document_by_id, create_user, \
-    create_document, update_document
+    create_document, update_document, delete_document
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -154,9 +154,16 @@ def endpoint_update_document():
     group = data['group'] if 'group' in data else document.group
     update_document(session, document, title, content, group)
 
+@app.route('/api/document/delete', methods=['DELETE'])
+def endpoint_delete_document():
+    global session
+    data = request.json
+    document = get_document_by_id(session, data['id'])
+    delete_document(session, document)
+
 
 # Run app
 if __name__ == '__main__':
     session = create_session()
     create_user(session, 'Grace')
-    app.run(host='localhost', port=8000)
+    app.run(host='localhost', port=8080)
