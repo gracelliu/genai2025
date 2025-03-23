@@ -108,8 +108,6 @@ def new_image():
 
     print(f"Problem: {response.problem}")
     print(f"Edits: {response.update_notes}")
-    print(f"Notes: {response.notes}")
-    print(f"current_section: {curr_sec}")
     print(f"Explanation: {response.thinking}")
 
     return {
