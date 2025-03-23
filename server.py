@@ -28,7 +28,7 @@ last_image = None
 session: Session | None = None
 
 class Response(BaseModel):
-    explanation: str
+    thinking: str
     notes: str
     problem: str
     update_notes: bool
@@ -74,10 +74,10 @@ def new_image():
         "confusing, elaborate a bit, they should be readable notes."
         ""
         "Schema:"
+        "thinking: str - A short explanation of why you put the values you did for the three fields below."
         "notes: str - The notes taken from the second image"
         "problem: str - The problem with the images, if any"
         "update_notes: bool - Whether you have update the notes to be up to date"
-        "explanation: str - A short explanation of why you put the values you did for the three above fields."
         ""
         "The next message will contain what is currently in the notes."
     )
@@ -110,7 +110,7 @@ def new_image():
     print(f"Edits: {response.update_notes}")
     print(f"Notes: {response.notes}")
     print(f"current_section: {curr_sec}")
-    print(f"Explanation: {response.explanation}")
+    print(f"Explanation: {response.thinking}")
 
     return {
         "new_section": new_section_flag,
