@@ -14,20 +14,35 @@
   
         <div class="notes-container">
           <h2 class="notes-title">Notes</h2>
-          <button @click="toggleFont" class="font-toggle">
-            Use {{ currentFont === 'opendyslexic' ? 'Lexend' : 'OpenDyslexic' }} Font
-          </button>
-  
-          <div class="notes-content" :class="currentFont === 'lexend' ? 'lexend-font' : 'opendyslexic-font'">
-            <div v-if="!matchedDocument">
-              <p>No matching document found.</p>
-            </div>
-            <div v-else>
-              <h3>{{ matchedDocument.title }}</h3>
-              <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
-              <div v-html="renderMarkdown(matchedDocument.content)"></div>
-            </div>
-          </div>
+          <div class="notes-content" :class="[currentFont + '-font', contrastMode + '-contrast']">
+  <div class="accessibility-controls">
+    <div class="selector">
+      <label for="fontSelect">Font:</label>
+      <select id="fontSelect" v-model="currentFont">
+        <option value="lexend">Lexend</option>
+        <option value="opendyslexic">OpenDyslexic</option>
+      </select>
+    </div>
+
+    <div class="selector">
+      <label for="contrastMode">Contrast:</label>
+      <select id="contrastMode" v-model="contrastMode">
+        <option value="default">Default</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="high">High Contrast</option>
+      </select>
+    </div>
+    <!-- 🔊 Text-to-Speech Button -->
+  <button class="tts-button" @click="speakText">
+    <i class="fas fa-volume-up"></i> Listen
+  </button>
+
+  </div>
+
+  <p>Write your notes here...</p>
+</div>
+
         </div>
       </div>
     </div>
@@ -41,8 +56,7 @@
     name: 'NotesPage',
     data() {
       return {
-        currentFont: 'opendyslexic',
-        matchedDocument: null
+        currentFont: 'opendyslexic'
       };
     },
     computed: {
@@ -54,38 +68,10 @@
       }
     },
     methods: {
-      toggleFont() {
-        this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
-      },
-      async fetchDocument() {
-        try {
-            const response = await axios.get('http://localhost:8000/api/document/list');
-            const documents = response.data;
-
-            // Match only by group (case + whitespace insensitive)
-            this.matchedDocument = documents.find(doc =>
-            doc.group?.trim().toLowerCase() === this.courseCode.trim().toLowerCase()
-            );
-
-            if (!this.matchedDocument) {
-            console.warn("No document found with group:", this.courseCode);
-            }
-        } catch (error) {
-            console.error("Failed to fetch documents:", error);
-            this.matchedDocument = {
-            title: 'Error',
-            group: '',
-            content: 'Failed to fetch or match documents.'
-            };
-        }
-        },
-      renderMarkdown(text) {
-        return marked.parse(text || '');
-      }
-    },
-    mounted() {
-      this.fetchDocument();
+    toggleFont() {
+      this.currentFont = this.currentFont === 'opendyslexic' ? 'lexend' : 'opendyslexic';
     }
+  }
   };
   </script>
   
@@ -169,30 +155,29 @@
   }
   
   .lexend-font {
-    font-family: 'Lexend', sans-serif;
-  }
-  
-  .opendyslexic-font {
-    font-family: 'OpenDyslexic', sans-serif;
-  }
-  
-  .font-toggle {
-    background-color: #ffe28a;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    margin-bottom: 16px;
-  }
-  
-  .font-toggle:hover {
-    background-color: #ffd65a;
-  }
-  
+  font-family: 'Lexend', sans-serif;
+}
+
+.opendyslexic-font {
+  font-family: 'OpenDyslexic', sans-serif;
+}
+
+.font-toggle {
+  background-color: #ffe28a;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 16px;
+}
+.font-toggle:hover {
+  background-color: #ffd65a;
+}
+
   @keyframes down {
     0%,
     100% {

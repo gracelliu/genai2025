@@ -29,6 +29,7 @@
       </div>
       <div class="button-container">
       <button @click="handleAddLecture">Add New Lecture</button>
+      
     </div>
     </div>
   </div>
@@ -52,6 +53,8 @@ export default {
       this.lectureCount += 1;
     }
   }
+
+
 };
 </script>
 
