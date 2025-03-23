@@ -2,7 +2,7 @@
   <div class="lecture-page">
     <!-- Top Bar -->
     <div class="header">
-      <h1>{{ courseCode }}: {{ courseTitle }}</h1>
+      <h1>Clarify Mode</h1>
     </div>
 
     <!-- Main Content -->
@@ -43,8 +43,8 @@ import { marked } from 'marked';
 
 const route = useRoute();
 
-const courseCode = ref('');
-const courseTitle = ref('');
+// const courseCode = ref('');
+// const courseTitle = ref('');
 const customTitle = ref('');
 const customGroup = ref('');
 const sections = ref([]);
@@ -74,7 +74,7 @@ const saveTranscriptToDatabase = async () => {
   };
 
   try {
-    const response = await fetch('http://localhost:8000/api/document/create', {
+    const response = await fetch('https://api-clarify.midnightsky.net/api/document/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ const startImageCapture = () => {
       const formData = new FormData();
       formData.append('image', blob, 'capture.png');
 
-      fetch('http://localhost:8000/api/new_image', {
+      fetch('https://api-clarify.midnightsky.net/api/new_image', {
         method: 'POST',
         body: formData
       })
@@ -149,10 +149,10 @@ const startImageCapture = () => {
 onMounted(() => {
   startWebcam();
 
-  const course = route.params.course;
-  const lectureId = route.params.lectureId;
-  courseCode.value = course;
-  courseTitle.value = `${course} Lecture: ${lectureId}`;
+  // const course = route.params.course;
+  // const lectureId = route.params.lectureId;
+  // courseCode.value = course;
+  // courseTitle.value = `${course} Lecture: ${lectureId}`;
 
   startImageCapture();
 });

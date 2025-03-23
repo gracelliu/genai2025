@@ -7,54 +7,59 @@
 
     <div class="overlay">
 
-    <div class="code">
-    <h1>{{ courseCode }}</h1></div>
+      <div class="code">
+        <h1>{{ courseCode }}</h1></div>
 
-    <div class="page"> 
-    <p>This is the course page for {{ courseCode }}.</p> </div>
+      <div class="page">
+        <p>This is the course page for {{ courseCode }}.</p></div>
 
-    <div class="lectures">
-      <div class="lecture-size">
-      <h2>Lectures</h2></div>
-      <div class="lecture-grid">
-        <div
-          class="lecture-card"
-          v-for="n in lectureCount"
-          :key="n"
-        >
-          <router-link :to="`/notes/${courseCode}/lecture-${n}`">
-            Lecture {{ n }}
-          </router-link>
+      <div class="lectures">
+        <div class="lecture-size">
+          <h2>Lectures</h2></div>
+        <div class="lecture-grid">
+          <div
+              class="lecture-card"
+              v-for="doc in documents"
+              :key="doc.id"
+          >
+            <router-link :to="`/notes/${doc.id}`">
+              {{ doc.title }}
+            </router-link>
+          </div>
+        </div>
+        <div class="button-container">
         </div>
       </div>
-      <div class="button-container">
-      <button @click="handleAddLecture">Add New Lecture</button>
-      
-    </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "CoursePage",
   data() {
     return {
       courseCode: '',
-      lectureCount: 1, // start with one lecture
+      documents: []
     };
   },
-  mounted() {
-    this.courseCode = this.$route.params.courseCode;
-  },
   methods: {
-    handleAddLecture() {
-      this.lectureCount += 1;
+    async fetchCoursesFromDB()
+    {
+      try {
+        const res = await axios.get("https://api-clarify.midnightsky.net/api/document/list");
+        this.documents = res.data.filter(doc => doc.group === this.courseCode);
+      } catch (err) {
+        console.error("Failed to load courses:", err);
+      }
     }
+  },
+  mounted() {
+    this.fetchCoursesFromDB()
+    this.courseCode = this.$route.params.courseCode;
   }
-
-
 };
 </script>
 
@@ -73,11 +78,11 @@ export default {
 }
 
 .lecture-size {
-  margin-left: 50px; 
+  margin-left: 50px;
 }
 
 .page {
-  font-size: 20px; 
+  font-size: 20px;
 }
 
 .lectures {
@@ -176,7 +181,7 @@ button:hover {
     top: -100px;
   }
   70% {
-    top: 700px; 
+    top: 700px;
   }
 }
 
@@ -185,7 +190,7 @@ button:hover {
     bottom: -100px;
   }
   70% {
-    bottom: 700px; 
+    bottom: 700px;
   }
 }
 </style>

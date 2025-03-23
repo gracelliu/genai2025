@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, create_engine
@@ -13,11 +14,14 @@ class User(Base):
 
 class Document(Base):
     __tablename__ = 'documents'
+
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String(255))
     content = Column(Text)
     group = Column(String(255))
+    time_created = Column(DateTime)
+    time_modified = Column(DateTime)
 
 def get_engine():
     username = 'clarify'
@@ -40,6 +44,10 @@ def get_documents_by_user(session, user):
 def get_document_by_id(session, document_id):
     return session.query(Document).filter(Document.id == document_id).first()
 
+def delete_document(session, document):
+    session.delete(document)
+    session.commit()
+
 def create_user(session, name):
     user = User(name=name)
     session.add(user)
@@ -47,7 +55,12 @@ def create_user(session, name):
     return user
 
 def create_document(session, user, title, content, group):
-    document = Document(user_id=user.id, title=title, content=content, group=group)
+    document = Document(user_id=user.id,
+                        title=title,
+                        content=content,
+                        group=group,
+                        time_created=datetime.now(),
+                        time_modified=datetime.now())
     session.add(document)
     session.commit()
     return document
@@ -56,9 +69,6 @@ def update_document(session, document, title, content, group):
     document.title = title
     document.content = content
     document.group = group
+    document.time_modified = datetime.now()
     session.commit()
     return document
-
-def delete_document(session, document):
-    session.delete(document)
-    session.commit()

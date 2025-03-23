@@ -9,7 +9,7 @@
 
         <h1>Welcome, Grace</h1>
         <div class="center-button">
-          <router-link :to="`/lecture/CSC100/lecture-1`" class="shimmer-button">
+          <router-link :to="`/lecture`" class="shimmer-button">
             CLARIFY ✦˚˖⁺
           </router-link>
         </div>
@@ -33,8 +33,7 @@
           <h2>Recently Added Lectures</h2>
           <ul>
             <li v-for="(lecture, index) in recentLectures" :key="index">
-              <router-link
-                :to="`/lecture/${lecture.course}/lecture-${lecture.number}`"
+                <router-link :to="`/lecture`">
               >
                 📘 Lecture {{ lecture.number }}: {{ lecture.title }} -
                 {{ lecture.course }}
@@ -231,15 +230,13 @@ export default {
   methods: {
     async fetchCoursesFromDB() {
       try {
-        const res = await axios.get("http://localhost:8000/api/document/list");
+        const res = await axios.get("https://api-clarify.midnightsky.net/api/document/list");
         const documents = res.data;
 
         // Extract unique group codes (i.e., course codes)
-        const uniqueGroups = [
+        this.courses = [
           ...new Set(documents.map(doc => doc.group?.trim()).filter(Boolean))
         ];
-
-        this.courses = uniqueGroups;
       } catch (err) {
         console.error("Failed to load courses:", err);
       }
