@@ -1,47 +1,99 @@
 <template>
-    <div class="welcome-page">
-      <h1>Welcome, Grace</h1>
-  
+  <div class="welcome-page">
+
+    <section id="up"></section>
+    <section id="down"></section>
+
+    <div class="overlay">
+
+    <h1>Welcome, Grace</h1>
       <div class="content">
         <!-- LEFT COLUMN: Recently Added Lectures -->
         <div class="left-column">
           <h2>Recently Added Lectures</h2>
           <ul>
             <li v-for="(lecture, index) in recentLectures" :key="index">
-              <router-link :to="`/lecture/${lecture.course}/lecture-${lecture.number}`">
-                📘 Lecture {{ lecture.number }}: {{ lecture.title }} - {{ lecture.course }}
+              <router-link
+                :to="`/lecture/${lecture.course}/lecture-${lecture.number}`"
+              >
+                📘 Lecture {{ lecture.number }}: {{ lecture.title }} -
+                {{ lecture.course }}
               </router-link>
             </li>
           </ul>
         </div>
-  
+
         <!-- RIGHT COLUMN: Courses -->
         <div class="right-column">
           <h2>Your Courses</h2>
           <ul>
             <li v-for="(course, index) in courses" :key="index">
-              <router-link :to="`/course/${course}`">🎓 {{ course }}</router-link>
+              <router-link :to="`/course/${course}`"
+                >🎓 {{ course }}</router-link
+              >
             </li>
           </ul>
         </div>
       </div>
     </div>
-  </template>
-  
+  </div>
+</template>
 
-  <style scoped>
+
+<style scoped>
+
 .welcome-page {
-  padding: 20px;
+  position: relative;
+  min-height: 100vh;
+  padding: 0;
+  overflow: hidden;
   background-color: #f4f6f8;
 }
 
+/* 🧊 Background blob animation setup */
+#up, #down {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+#up {
+  height: 800px;
+  width: 800px;
+  background-image: linear-gradient(80deg, rgb(173, 218, 236), rgb(222, 97, 233));
+  top: -200px;
+  left: -200px;
+  animation-name: down;
+}
+
+#down {
+  height: 500px;
+  width: 500px;
+  background-image: linear-gradient(80deg, rgba(245, 207, 82, 0.8), rgba(199, 10, 114));
+  bottom: -150px;
+  right: -150px;
+  animation-name: up;
+}
+
+/* 🧩 Overlay content styling */
+.overlay {
+  position: relative;
+  z-index: 1;
+  padding: 60px 40px;
+}
+
+
 h1 {
-    font-size: 40px;
-    margin-bottom: 24px;
+  font-size: 40px;
+  margin-bottom: 24px;
 }
 
 h2 {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 .content {
@@ -73,7 +125,6 @@ li {
   line-height: 1.6;
 }
 
-
 a {
   text-decoration: none;
   color: #2563eb;
@@ -82,32 +133,48 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+@keyframes down {
+  0%, 100% {
+    top: -100px;
+  }
+  70% {
+    top: 700px; 
+  }
+}
+
+@keyframes up {
+  0%, 100% {
+    bottom: -100px;
+  }
+  70% {
+    bottom: 700px; 
+  }
+}
+
 </style>
 
-
-  <script>
-  export default {
-    name: "WelcomePage",
-    data() {
-      return {
-        recentLectures: [
-            { number: 9, title: "Loops", course: "CSC100" },
-            { number: 4, title: "Derivatives", course: "MAT100" },
-            { number: 6, title: "Probability", course: "STA100" },
-            { number: 2, title: "Logical Statements", course: "CSC100" },
-            { number: 5, title: "Mendelian Genetics", course: "BIO100" },
-            { number: 3, title: "Chemical Bonding", course: "CHM100" },
-            { number: 7, title: "Newton’s Laws", course: "PHY100" },
-            { number: 8, title: "Hypothesis Testing", course: "STA100" },
-            { number: 6, title: "Functions and Graphs", course: "MAT100" },
-            { number: 10, title: "Python Functions", course: "CSC100" },
-            { number: 1, title: "Introduction to Biology", course: "BIO100" },
-            { number: 11, title: "Acid-Base Reactions", course: "CHM100" }
-        ],
-        courses: ["CSC100", "MAT100", "STA100", "BIO100", "CHM100", "PHY100"]
-      };
-    }
-  };
-  </script>
-  
-
+<script>
+export default {
+  name: "WelcomePage",
+  data() {
+    return {
+      recentLectures: [
+        { number: 9, title: "Loops", course: "CSC100" },
+        { number: 4, title: "Derivatives", course: "MAT100" },
+        { number: 6, title: "Probability", course: "STA100" },
+        { number: 2, title: "Logical Statements", course: "CSC100" },
+        { number: 5, title: "Mendelian Genetics", course: "BIO100" },
+        { number: 3, title: "Chemical Bonding", course: "CHM100" },
+        { number: 7, title: "Newton’s Laws", course: "PHY100" },
+        { number: 8, title: "Hypothesis Testing", course: "STA100" },
+        { number: 6, title: "Functions and Graphs", course: "MAT100" },
+        { number: 10, title: "Python Functions", course: "CSC100" },
+        { number: 1, title: "Introduction to Biology", course: "BIO100" },
+        { number: 11, title: "Acid-Base Reactions", course: "CHM100" },
+      ],
+      courses: ["CSC100", "MAT100", "STA100", "BIO100", "CHM100", "PHY100"],
+    };
+  },
+};
+</script>
