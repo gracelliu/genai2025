@@ -15,7 +15,13 @@
         </div>
   
         <div class="notes-container">
-          <h2 class="notes-title">Notes</h2>
+            <div class="notes-header-row">
+                <h2 class="notes-title">Notes</h2>
+                <button class="delete-button" @click="deleteDocument">
+                    Delete Lecture
+                </button>
+                </div>
+
   
           <div class="notes-content" :class="[currentFont + '-font', contrastMode + '-contrast']">
             <div class="accessibility-controls">
@@ -49,9 +55,6 @@
               <h3>{{ matchedDocument.title }}</h3>
               <p><strong>Group:</strong> {{ matchedDocument.group }}</p>
               <div v-html="renderMarkdown(matchedDocument.content)"></div>
-              <button class="delete-button" @click="deleteDocument">
-                Delete Lecture
-              </button>
             </div>
           </div>
         </div>
@@ -243,11 +246,20 @@
     cursor: pointer;
     margin-top: 20px;
     transition: background-color 0.3s ease;
+    margin-bottom: 20px;
   }
   .delete-button:hover {
     background-color: #f5c6cb;
   }
   
+  .notes-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
   /* animated toast */
   .toast {
     position: fixed;
