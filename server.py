@@ -111,7 +111,6 @@ def new_image():
 
     new_section_flag = False
 
-    curr_sec = current_section
     if response.problem == 'NEW_SECTION':
         sections.append(current_section)
         current_section = response.notes

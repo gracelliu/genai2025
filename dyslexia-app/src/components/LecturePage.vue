@@ -22,21 +22,21 @@
           <div class="transcript-header">
             <h2>Live Transcript</h2>
             <div class="meta-inputs">
-              <input v-model="customTitle" placeholder="Lecture Title" />
-              <input v-model="customGroup" placeholder="Course Code" />
+              <input v-model="customTitle" placeholder="Lecture Title"/>
+              <input v-model="customGroup" placeholder="Course Code"/>
               <button @click="saveTranscriptToDatabase">Save</button>
             </div>
           </div>
-            <div class="transcript-body" ref="transcriptBody" :key="fadeKey">
-              <div
+          <div class="transcript-body" ref="transcriptBody" :key="fadeKey">
+            <div
                 v-for="(section, sIndex) in sections"
                 :key="sIndex"
                 class="transcript-section"
-              >
-                <div v-html="renderMarkdown(section)"></div>
-                <hr v-if="sIndex < sections.length - 1" />
-              </div>
+            >
+              <div v-html="renderMarkdown(section)"></div>
+              <hr v-if="sIndex < sections.length - 1"/>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -49,9 +49,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
-import { useRoute } from 'vue-router';
-import { marked } from 'marked';
+import {ref, onMounted, nextTick} from 'vue';
+import {useRoute} from 'vue-router';
+import {marked} from 'marked';
 
 const route = useRoute();
 
@@ -61,17 +61,18 @@ const sections = ref([]);
 const webcam = ref(null);
 const transcriptBody = ref(null);
 const showToast = ref(false);
+const sendingImage = ref(false);
 
 const startWebcam = () => {
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(stream => {
-      if (webcam.value) {
-        webcam.value.srcObject = stream;
-      }
-    })
-    .catch(err => {
-      console.error("Webcam error:", err);
-    });
+  navigator.mediaDevices.getUserMedia({video: true})
+      .then(stream => {
+        if (webcam.value) {
+          webcam.value.srcObject = stream;
+        }
+      })
+      .catch(err => {
+        console.error("Webcam error:", err);
+      });
 };
 
 const saveTranscriptToDatabase = async () => {
@@ -106,54 +107,64 @@ const saveTranscriptToDatabase = async () => {
 const startImageCapture = () => {
   setInterval(() => {
     if (!webcam.value) return;
+    if (sendingImage.value) return;
+    sendingImage.value = true;
+    try {
 
-    const video = webcam.value;
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+      const video = webcam.value;
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    canvas.toBlob(blob => {
-      if (!blob) return;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(blob => {
+        if (!blob) return;
 
-      const formData = new FormData();
-      formData.append('image', blob, 'capture.png');
-      formData.append('current_section', sections.value.at(-1) || '');
+        const formData = new FormData();
+        formData.append('image', blob, 'capture.png');
+        formData.append('current_section', sections.value.at(-1) || '');
 
-      fetch('https://api-clarify.midnightsky.net/api/new_image', {
-        method: 'POST',
-        body: formData
-      })
-        .then(res => res.json())
-        .then(data => {
-          const updatedSection = data.current_section;
-          const prevScrollTop = transcriptBody.value?.scrollTop ?? 0;
-
-          if (data.new_section) {
-            sections.value.push(updatedSection);
-          } else if (sections.value.length > 0) {
-            const currSection = sections.value.at(-1);
-            if (updatedSection !== currSection) {
-              sections.value[sections.value.length - 1] = updatedSection;
-            }
-          } else {
-            sections.value.push(updatedSection);
-          }
-
-          nextTick(() => {
-            if (transcriptBody.value) {
-              transcriptBody.value.scrollTop = prevScrollTop;
-            }
-          });
+        fetch('https://api-clarify.midnightsky.net/api/new_image', {
+          method: 'POST',
+          body: formData
         })
-        .catch(err => {
-          console.error("Image capture error:", err);
-        });
-    }, 'image/png');
-  }, 2000);
+            .then(res => res.json())
+            .then(data => {
+              const updatedSection = data.current_section;
+              const prevScrollTop = transcriptBody.value?.scrollTop ?? 0;
+
+              if (data.new_section) {
+                sections.value.push(updatedSection);
+              } else if (sections.value.length > 0) {
+                const currSection = sections.value.at(-1);
+                if (updatedSection !== currSection) {
+                  sections.value[sections.value.length - 1] = updatedSection;
+                }
+              } else {
+                sections.value.push(updatedSection);
+              }
+
+              nextTick(() => {
+                if (transcriptBody.value) {
+                  transcriptBody.value.scrollTop = prevScrollTop;
+                }
+              });
+            })
+            .catch(err => {
+              console.error("Image capture error:", err);
+            });
+      }, 'image/png');
+
+    } catch (err) {
+      console.error("Image capture error:", err);
+    } finally {
+      sendingImage.value = false;
+    }
+
+  }, 2500);
 };
 
 onMounted(() => {
@@ -323,9 +334,21 @@ button:hover {
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-10px); }
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 </style>
